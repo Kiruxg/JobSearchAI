@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Optimizer - JobSearchAI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="resume-optimizer.css">
+    <!-- Add loading spinner CSS -->
+    <style>
+        .loading-spinner {
+            display: none;
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #2563eb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-text {
+            text-align: center;
+            color: #2563eb;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        .upload-box.processing {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .analyze-button:disabled {
+            background-color: #93c5fd;
+            cursor: not-allowed;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        // Set worker source
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        }
+    </script>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div>
+            <div class="loading-spinner"></div>
+            <div class="loading-text" id="loadingText">Processing...</div>
+        </div>
+    </div>
+
+    <header>
+        <nav>
+            <div class="logo">JobSearchAI</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="#dashboard">Dashboard</a>
+                <a href="#logout">Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="optimizer-main">
+        <section class="upload-section">
+            <div class="upload-container">
+                <!-- Resume Upload -->
+                <div class="resume-upload">
+                    <h2>Upload Your Resume</h2>
+                    <div class="upload-box" id="resumeUpload">
+                        <input type="file" id="resumeFile" accept=".pdf,.doc,.docx" hidden>
+                        <label for="resumeFile">
+                            <img src="upload-icon.svg" alt="Upload">
+                            <span>Drag & drop your resume or click to browse</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Job Description Input -->
+                <div class="job-description">
+                    <h2>Job Description</h2>
+                    <textarea 
+                        id="jobDescription" 
+                        placeholder="Paste the job description here to analyze keyword matching..."
+                        rows="10"
+                    ></textarea>
+                </div>
+
+                <button id="analyzeButton" class="analyze-button">Analyze Resume</button>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section" id="resultsSection" style="display: none;">
+            <div class="score-card">
+                <h2>ATS Match Score</h2>
+                <div class="score-circle">
+                    <span id="matchScore">0</span>%
+                </div>
+            </div>
+
+            <div class="analysis-results">
+                <div class="missing-keywords">
+                    <h3>Missing Keywords</h3>
+                    <ul id="missingKeywords"></ul>
+                </div>
+                
+                <div class="found-keywords">
+                    <h3>Found Keywords</h3>
+                    <ul id="foundKeywords"></ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Scripts -->
+    <script src="resume-optimizer.js"></script>
+</body>
+</html> 
