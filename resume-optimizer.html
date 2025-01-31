@@ -3,62 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume Optimizer - JobSearchAI</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="resume-optimizer.css">
+    <title>Resume Optimizer - JobGenie</title>
+    <link rel="stylesheet" href="css/resume-optimizer.css">
+    <link rel="stylesheet" href="css/styles.css">
     <!-- Add loading spinner CSS -->
-    <style>
-        .loading-spinner {
-            display: none;
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #2563eb;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loading-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .loading-overlay.active {
-            display: flex;
-        }
-
-        .loading-text {
-            text-align: center;
-            color: #2563eb;
-            font-weight: 500;
-            margin-top: 10px;
-        }
-
-        .upload-box.processing {
-            opacity: 0.7;
-            pointer-events: none;
-        }
-
-        .analyze-button:disabled {
-            background-color: #93c5fd;
-            cursor: not-allowed;
-        }
-    </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
     <script>
         // Set worker source
         if (typeof pdfjsLib !== 'undefined') {
@@ -71,22 +21,39 @@
     <div class="loading-overlay" id="loadingOverlay">
         <div>
             <div class="loading-spinner"></div>
-            <div class="loading-text" id="loadingText">Processing...</div>
+            <div class="loading-text" id="loadingText">Analyzing Resume...</div>
         </div>
     </div>
 
     <header>
-        <nav>
-            <div class="logo">JobSearchAI</div>
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="#dashboard">Dashboard</a>
-                <a href="#logout">Logout</a>
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="index.html">
+                    <img src="img/lampLogo.png" alt="JobGenie Logo" class="logo-image">
+                    <div class="logo-text">JobGenie</div>
+                  </a>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="resume-optimizer.html" class="nav-link active">ATS Scanner</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="cover-letter.html" class="nav-link">Cover Letter Generator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/interview-prep" class="nav-link">AI Interview Prep</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/job-tracker" class="nav-link">Job Application Tracker</a>
+                    </li>
+                </ul>
             </div>
         </nav>
     </header>
 
     <main class="optimizer-main">
+        <h1>Resume ATS Optimizer</h1>
+        
+        <!-- Upload Section -->
         <section class="upload-section">
             <div class="upload-container">
                 <!-- Resume Upload -->
@@ -95,10 +62,11 @@
                     <div class="upload-box" id="resumeUpload">
                         <input type="file" id="resumeFile" accept=".pdf,.doc,.docx" hidden>
                         <label for="resumeFile">
-                            <img src="upload-icon.svg" alt="Upload">
+                            <img src="img/upload-icon.svg" alt="Upload">
                             <span>Drag & drop your resume or click to browse</span>
                         </label>
                     </div>
+                    <div id="filePreview" class="file-preview"></div>
                 </div>
 
                 <!-- Job Description Input -->
@@ -108,6 +76,7 @@
                         id="jobDescription" 
                         placeholder="Paste the job description here to analyze keyword matching..."
                         rows="10"
+                        required
                     ></textarea>
                 </div>
 
@@ -117,28 +86,45 @@
 
         <!-- Results Section -->
         <section class="results-section" id="resultsSection" style="display: none;">
-            <div class="score-card">
-                <h2>ATS Match Score</h2>
-                <div class="score-circle">
-                    <span id="matchScore">0</span>%
+            <div class="results-container">
+                <!-- Match Score -->
+                <div class="score-card">
+                    <h2>ATS Match Score</h2>
+                    <div class="score-circle">
+                        <span id="matchScore">0</span>%
+                    </div>
                 </div>
-            </div>
 
-            <div class="analysis-results">
-                <div class="missing-keywords">
-                    <h3>Missing Keywords</h3>
-                    <ul id="missingKeywords"></ul>
+                <!-- Keyword Analysis -->
+                <div class="keyword-analysis">
+                    <div class="matching-keywords">
+                        <h3>Found Keywords</h3>
+                        <ul id="foundKeywords" class="keyword-list"></ul>
+                    </div>
+                    
+                    <div class="missing-keywords">
+                        <h3>Missing Keywords</h3>
+                        <ul id="missingKeywords" class="keyword-list"></ul>
+                    </div>
                 </div>
-                
-                <div class="found-keywords">
-                    <h3>Found Keywords</h3>
-                    <ul id="foundKeywords"></ul>
+
+                <!-- Recommendations -->
+                <div class="recommendations">
+                    <h3>Recommendations</h3>
+                    <ul id="recommendationsList"></ul>
                 </div>
             </div>
         </section>
     </main>
 
     <!-- Scripts -->
-    <script src="resume-optimizer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        // Set worker source
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        }
+    </script>
+    <script src="js/resume-optimizer.js"></script>
 </body>
 </html> 

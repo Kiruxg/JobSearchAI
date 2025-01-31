@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cover Letter Generator - JobGenie</title>
+    <link href="css/cover-letter.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html">
+                <img src="img/lampLogo.png" alt="JobGenie Logo" class="logo-image">
+                <div class="logo-text">JobGenie</div>
+              </a>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="resume-optimizer.html" class="nav-link">ATS Scanner</a>
+                </li>
+                <li class="nav-item">
+                    <a href="cover-letter.html" class="nav-link active">Cover Letter Generator</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/interview-prep" class="nav-link">AI Interview Prep</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/job-tracker" class="nav-link">Job Application Tracker</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="cover-letter-main">
+        <div class="container">
+            <h1>Cover Letter Generator</h1>
+            
+            <div class="generator-grid">
+                <!-- Input Section -->
+                <div class="input-section">
+                    <div class="form-group">
+                        <label for="jobTitle">Job Title</label>
+                        <input type="text" id="jobTitle" placeholder="e.g., Senior Software Engineer">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="companyName">Company Name</label>
+                        <input type="text" id="companyName" placeholder="e.g., Tech Corp">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="jobDescription">Job Description</label>
+                        <textarea id="jobDescription" rows="6" placeholder="Paste the job description here..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="keyAchievements">Key Achievements (Optional)</label>
+                        <textarea id="keyAchievements" rows="4" 
+                            placeholder="List 2-3 relevant achievements that match this role..."></textarea>
+                    </div>
+
+                    <div class="upload-container" id="uploadContainer">
+                        <input type="file" id="resumeFile" accept=".pdf,.doc,.docx" hidden>
+                        <label for="resumeFile" class="upload-label">
+                            <div class="upload-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                            </div>
+                            <span>Upload your resume (PDF, DOC, DOCX)</span>
+                        </label>
+                    </div>
+                    <div id="uploadPreview" class="upload-preview"></div>
+
+                    <div class="form-group">
+                        <label for="templateStyle">Template Style</label>
+                        <select id="templateStyle">
+                            <option value="corporate">📌 Corporate</option>
+                            <option value="creative">🎨 Creative</option>
+                            <option value="tech">💻 Tech</option>
+                        </select>
+                    </div>
+
+                    <button id="generateButton" class="generate-button">
+                        Generate Cover Letter
+                    </button>
+                </div>
+
+                <!-- Preview Section -->
+                <div class="preview-section">
+                    <div class="preview-header">
+                        <h2>Preview</h2>
+                        <div class="preview-controls">
+                            <button id="copyButton" class="preview-control-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copy
+                            </button>
+                            <button id="downloadButton" class="preview-control-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                Download
+                            </button>
+                        </div>
+                    </div>
+                    <div id="coverLetterPreview" class="preview-content">
+                        <div class="placeholder-text">
+                            Your cover letter will appear here...
+                        </div>
+                    </div>
+                    <div id="strengthMeter" class="strength-meter"></div>
+                    <div id="keywordsList" class="keywords-list"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div id="loadingText" class="loading-text">Generating your cover letter...</div>
+        </div>
+    </div>
+
+    <script src="js/cover-letter.js"></script>
+</body>
+</html> 
