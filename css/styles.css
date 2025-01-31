@@ -52,7 +52,9 @@ header nav > a {
   border-radius: 6px;
   transform: none !important;
 }
-
+a {
+  text-decoration: none;
+}
 /* Logo text */
 .logo-text {
   font-size: 1.25rem;
@@ -209,6 +211,17 @@ section {
   background-color: #1e40af;
 }
 
+button:disabled,
+button:disabled:hover {
+  background-color: #cccccc !important;
+  cursor: not-allowed;
+  opacity: 0.6 !important;
+  transform: none !important;
+  box-shadow: none !important;
+  color: #666666 !important;
+  border: none !important;
+}
+
 /* Footer */
 footer {
   text-align: center;
@@ -259,6 +272,7 @@ footer {
   font-weight: 500;
   transition: color 0.2s ease;
   padding: 0.5rem;
+  float: left;
 }
 
 .nav-link:hover {
@@ -275,23 +289,23 @@ footer {
   nav {
     padding: 0.5rem 1rem;
   }
-  
+
   .logo-image {
     width: 18px !important;
     height: 18px !important;
     max-width: 18px !important;
     max-height: 18px !important;
   }
-  
+
   .logo-text {
     font-size: 1.125rem;
     margin-right: 2rem;
   }
-  
+
   .nav-links {
     gap: 1.5rem;
   }
-  
+
   main {
     margin-top: 64px;
   }
@@ -310,4 +324,3 @@ footer {
     padding: 3rem 1rem;
   }
 }
-

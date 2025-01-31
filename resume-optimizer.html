@@ -1,130 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Resume Optimizer - JobGenie</title>
-    <link rel="stylesheet" href="css/resume-optimizer.css">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/resume-optimizer.css" />
+    <link rel="stylesheet" href="css/styles.css" />
     <!-- Add loading spinner CSS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
     <script>
-        // Set worker source
-        if (typeof pdfjsLib !== 'undefined') {
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-        }
+      // Set worker source
+      if (typeof pdfjsLib !== "undefined") {
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+      }
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
-        <div>
-            <div class="loading-spinner"></div>
-            <div class="loading-text" id="loadingText">Analyzing Resume...</div>
-        </div>
+      <div>
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loadingText">Analyzing Resume...</div>
+      </div>
     </div>
 
     <header>
-        <nav class="navbar">
-            <div class="nav-container">
-                <a href="index.html">
-                    <img src="img/lampLogo.png" alt="JobGenie Logo" class="logo-image">
-                    <div class="logo-text">JobGenie</div>
-                  </a>
-                <ul class="nav-menu">
-                    <li class="nav-item">
-                        <a href="resume-optimizer.html" class="nav-link active">ATS Scanner</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="cover-letter.html" class="nav-link">Cover Letter Generator</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/interview-prep" class="nav-link">AI Interview Prep</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/job-tracker" class="nav-link">Job Application Tracker</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+      <nav class="navbar">
+        <div class="nav-container">
+          <a href="index.html">
+            <img
+              src="img/lampLogo.png"
+              alt="JobGenie Logo"
+              class="logo-image"
+            />
+            <div class="logo-text">JobGenie</div>
+          </a>
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="resume-optimizer.html" class="nav-link active"
+                >ATS Scanner</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="cover-letter.html" class="nav-link"
+                >Cover Letter Generator</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="/interview-prep" class="nav-link">AI Interview Prep</a>
+            </li>
+            <li class="nav-item">
+              <a href="/job-tracker" class="nav-link"
+                >Job Application Tracker</a
+              >
+            </li>
+          </ul>
+        </div>
+      </nav>
     </header>
 
     <main class="optimizer-main">
-        <h1>Resume ATS Optimizer</h1>
-        
-        <!-- Upload Section -->
-        <section class="upload-section">
-            <div class="upload-container">
-                <!-- Resume Upload -->
-                <div class="resume-upload">
-                    <h2>Upload Your Resume</h2>
-                    <div class="upload-box" id="resumeUpload">
-                        <input type="file" id="resumeFile" accept=".pdf,.doc,.docx" hidden>
-                        <label for="resumeFile">
-                            <img src="img/upload-icon.svg" alt="Upload">
-                            <span>Drag & drop your resume or click to browse</span>
-                        </label>
-                    </div>
-                    <div id="filePreview" class="file-preview"></div>
-                </div>
+      <h1>Resume ATS Optimizer</h1>
 
-                <!-- Job Description Input -->
-                <div class="job-description">
-                    <h2>Job Description</h2>
-                    <textarea 
-                        id="jobDescription" 
-                        placeholder="Paste the job description here to analyze keyword matching..."
-                        rows="10"
-                        required
-                    ></textarea>
-                </div>
-
-                <button id="analyzeButton" class="analyze-button">Analyze Resume</button>
+      <!-- Upload Section -->
+      <section class="upload-section">
+        <div class="upload-container">
+          <!-- Resume Upload -->
+          <div class="resume-upload">
+            <h2>Upload Your Resume</h2>
+            <div class="upload-box" id="resumeUpload">
+              <input
+                type="file"
+                id="resumeFile"
+                accept=".pdf,.doc,.docx"
+                hidden
+              />
+              <label for="resumeFile">
+                <img src="img/upload-icon.svg" alt="Upload" />
+                <span>Drag & drop your resume or click to browse</span>
+              </label>
             </div>
-        </section>
+            <div id="filePreview" class="file-preview"></div>
+          </div>
 
-        <!-- Results Section -->
-        <section class="results-section" id="resultsSection" style="display: none;">
-            <div class="results-container">
-                <!-- Match Score -->
-                <div class="score-card">
-                    <h2>ATS Match Score</h2>
-                    <div class="score-circle">
-                        <span id="matchScore">0</span>%
-                    </div>
-                </div>
+          <!-- Job Description Input -->
+          <div class="job-description">
+            <h2>Job Description</h2>
+            <textarea
+              id="jobDescription"
+              placeholder="Paste the job description here to analyze keyword matching..."
+              rows="10"
+              required
+            ></textarea>
+          </div>
 
-                <!-- Keyword Analysis -->
-                <div class="keyword-analysis">
-                    <div class="matching-keywords">
-                        <h3>Found Keywords</h3>
-                        <ul id="foundKeywords" class="keyword-list"></ul>
-                    </div>
-                    
-                    <div class="missing-keywords">
-                        <h3>Missing Keywords</h3>
-                        <ul id="missingKeywords" class="keyword-list"></ul>
-                    </div>
-                </div>
+          <button id="analyzeButton" class="analyze-button">
+            <span class="sparkle-icon">✨</span>
+            Analyze Resume
+          </button>
+        </div>
+      </section>
 
-                <!-- Recommendations -->
-                <div class="recommendations">
-                    <h3>Recommendations</h3>
-                    <ul id="recommendationsList"></ul>
-                </div>
+      <!-- Results Section -->
+      <section
+        class="results-section"
+        id="resultsSection"
+        style="display: none"
+      >
+        <div class="results-container">
+          <!-- Match Score -->
+          <div class="score-card">
+            <h2>ATS Match Score</h2>
+            <div class="score-circle"><span id="matchScore">0</span>%</div>
+          </div>
+
+          <!-- Keyword Analysis -->
+          <div class="keyword-analysis">
+            <div class="matching-keywords">
+              <h3>Found Keywords</h3>
+              <ul id="foundKeywords" class="keyword-list"></ul>
             </div>
-        </section>
+
+            <div class="missing-keywords">
+              <h3>Missing Keywords</h3>
+              <ul id="missingKeywords" class="keyword-list"></ul>
+            </div>
+          </div>
+
+          <!-- Recommendations -->
+          <div class="recommendations">
+            <h3>Recommendations</h3>
+            <ul id="recommendationsList"></ul>
+          </div>
+        </div>
+      </section>
     </main>
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
-        // Set worker source
-        if (typeof pdfjsLib !== 'undefined') {
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-        }
+      // Set worker source
+      if (typeof pdfjsLib !== "undefined") {
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+      }
     </script>
     <script src="js/resume-optimizer.js"></script>
-</body>
-</html> 
+  </body>
+</html>

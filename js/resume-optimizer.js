@@ -10,9 +10,6 @@ class KeywordExtractor {
       "angular",
       "vue",
       "node",
-      "express",
-      "django",
-      "flask",
       "sql",
       "mongodb",
       "aws",
@@ -183,27 +180,27 @@ class KeywordExtractor {
 class ResumeOptimizer {
   constructor() {
     console.log("Initializing ResumeOptimizer...");
-    
+
     // Initialize properties
     this.resumeText = "";
     this.jobDescription = "";
     this.keywordExtractor = new KeywordExtractor();
-    
+
     // Bind DOM elements
     this.initializeElements();
-    
+
     // Bind methods
     this.handleFileUpload = this.handleFileUpload.bind(this);
     this.analyzeResume = this.analyzeResume.bind(this);
     this.performAnalysis = this.performAnalysis.bind(this);
     this.displayResults = this.displayResults.bind(this);
-    
+
     // Add debounced job description analysis
     this.debouncedAnalysis = this.debounce(this.analyzeResume.bind(this), 1000);
-    
+
     // Attach event listeners
     this.attachEventListeners();
-    
+
     console.log("ResumeOptimizer initialized");
   }
 
@@ -228,17 +225,17 @@ class ResumeOptimizer {
   attachEventListeners() {
     // Handle file selection
     this.resumeInput.addEventListener("change", this.handleFileUpload);
-    
+
     // Handle analysis
     this.analyzeButton.addEventListener("click", this.analyzeResume);
-    
+
     // Add job description input listener
     this.jobDescriptionInput.addEventListener("input", () => {
       if (this.resumeText) {
         this.debouncedAnalysis();
       }
     });
-    
+
     // Handle drag and drop
     this.resumeUpload.addEventListener("dragover", (e) => {
       e.preventDefault();
@@ -275,7 +272,7 @@ class ResumeOptimizer {
 
       this.showLoading("Reading file...");
       this.resumeText = await this.extractTextFromFile(file);
-      
+
       if (!this.hasValidContent(this.resumeText)) {
         throw new Error("Could not extract text from file");
       }
@@ -289,7 +286,6 @@ class ResumeOptimizer {
       if (this.jobDescriptionInput.value.trim()) {
         await this.analyzeResume();
       }
-
     } catch (error) {
       this.handleError("File Upload Error", error);
     } finally {
@@ -311,8 +307,7 @@ class ResumeOptimizer {
       this.showLoading("Analyzing resume...");
       const results = await this.performAnalysis();
       this.displayResults(results);
-      this.resultsSection.style.display = 'block';
-
+      this.resultsSection.style.display = "block";
     } catch (error) {
       this.handleError("Analysis Error", error);
     } finally {
@@ -322,137 +317,176 @@ class ResumeOptimizer {
 
   async performAnalysis() {
     try {
-        console.log('Starting analysis with:', {
-            resumeText: this.resumeText.substring(0, 100) + '...',
-            jobDescription: this.jobDescriptionInput.value.substring(0, 100) + '...'
-        });
+      console.log("Starting analysis...");
 
-        // Extract keywords
-        const jobKeywords = this.keywordExtractor.extractKeywords(this.jobDescriptionInput.value);
-        const resumeKeywords = this.keywordExtractor.extractKeywords(this.resumeText);
+      // Log raw inputs
+      console.log("Raw inputs:", {
+        jobDescription: this.jobDescriptionInput.value.substring(0, 100),
+        resumeText: this.resumeText.substring(0, 100)
+      });
 
-        console.log('Raw extracted keywords:', {
-            job: jobKeywords,
-            resume: resumeKeywords
-        });
+      // Extract keywords
+      const jobKeywords = this.keywordExtractor.extractKeywords(
+        this.jobDescriptionInput.value
+      );
+      const resumeKeywords = this.keywordExtractor.extractKeywords(
+        this.resumeText
+      );
 
-        // Get all technical keywords
-        const allJobKeywords = [
-            ...jobKeywords.technical,
-            ...jobKeywords.soft,
-            ...jobKeywords.industry
-        ];
+      // Log extracted keywords before processing
+      console.log("Extracted keywords:", {
+        job: jobKeywords,
+        resume: resumeKeywords
+      });
 
-        const allResumeKeywords = [
-            ...resumeKeywords.technical,
-            ...resumeKeywords.soft,
-            ...resumeKeywords.industry
-        ];
+      // Create Sets for unique keywords
+      const allJobKeywords = [...new Set([
+        ...jobKeywords.technical,
+        ...jobKeywords.soft,
+        ...jobKeywords.industry
+      ])].map(kw => kw.toLowerCase());
 
-        console.log('All keywords:', {
-            job: allJobKeywords,
-            resume: allResumeKeywords
-        });
+      const allResumeKeywords = [...new Set([
+        ...resumeKeywords.technical,
+        ...resumeKeywords.soft,
+        ...resumeKeywords.industry
+      ])].map(kw => kw.toLowerCase());
 
-        // Find matching keywords
-        const matchingKeywords = allJobKeywords.filter(keyword => 
-            allResumeKeywords.includes(keyword)
-        );
+      // Log processed keywords
+      console.log("Processed keywords:", {
+        job: allJobKeywords,
+        resume: allResumeKeywords
+      });
 
-        // Find missing keywords
-        const missingKeywords = allJobKeywords.filter(keyword => 
-            !allResumeKeywords.includes(keyword)
-        );
+      // Find matching keywords (no duplicates)
+      const matchingKeywords = [...new Set(
+        allJobKeywords.filter(keyword => 
+          allResumeKeywords.includes(keyword)
+        )
+      )];
 
-        // Calculate match percentage
-        const matchPercentage = allJobKeywords.length > 0
-            ? Math.round((matchingKeywords.length / allJobKeywords.length) * 100)
-            : 0;
+      // Find missing keywords (no duplicates)
+      const missingKeywords = [...new Set(
+        allJobKeywords.filter(keyword => 
+          !allResumeKeywords.includes(keyword)
+        )
+      )];
 
-        console.log('Analysis results:', {
-            matchPercentage,
-            matchingKeywords,
-            missingKeywords
-        });
+      // Log matching and missing keywords
+      console.log("Keyword matching:", {
+        matching: matchingKeywords,
+        missing: missingKeywords
+      });
 
-        // Generate recommendations
-        const recommendations = this.generateRecommendations(
-            matchPercentage,
-            matchingKeywords,
-            missingKeywords,
-            resumeKeywords
-        );
+      // Calculate match percentage
+      const matchPercentage = allJobKeywords.length > 0
+        ? Math.round((matchingKeywords.length / allJobKeywords.length) * 100)
+        : 0;
 
-        return {
-            matchPercentage,
-            matchingKeywords,
-            missingKeywords,
-            recommendations
-        };
+      const results = {
+        matchPercentage,
+        matchingKeywords,
+        missingKeywords,
+        recommendations: this.generateRecommendations(
+          matchPercentage,
+          matchingKeywords,
+          missingKeywords,
+          resumeKeywords
+        )
+      };
+
+      console.log("Final results:", results);
+      return results;
+
     } catch (error) {
-        console.error('Analysis error:', error);
-        throw error;
+      console.error("Analysis error:", error);
+      throw error;
     }
   }
 
   displayResults(results) {
-    console.log('Displaying results:', results);
+    console.log("Displaying results:", results);
 
     // Update match score (ensure it's a number)
     const score = isNaN(results.matchPercentage) ? 0 : results.matchPercentage;
     if (this.matchScore) {
-        this.matchScore.textContent = score;
+      this.matchScore.textContent = score;
     }
-    
+
     // Update found keywords
     if (this.foundKeywordsList) {
-        this.foundKeywordsList.innerHTML = Array.isArray(results.matchingKeywords) && results.matchingKeywords.length > 0
-            ? results.matchingKeywords.map(keyword => `<li>${keyword}</li>`).join("")
-            : "<li>No matching keywords found</li>";
+      this.foundKeywordsList.innerHTML =
+        Array.isArray(results.matchingKeywords) &&
+        results.matchingKeywords.length > 0
+          ? results.matchingKeywords
+              .map((keyword) => `<li>${keyword}</li>`)
+              .join("")
+          : "<li>No matching keywords found</li>";
     }
-    
+
     // Update missing keywords
     if (this.missingKeywordsList) {
-        this.missingKeywordsList.innerHTML = Array.isArray(results.missingKeywords) && results.missingKeywords.length > 0
-            ? results.missingKeywords.map(keyword => `<li>${keyword}</li>`).join("")
-            : "<li>No missing keywords found</li>";
+      this.missingKeywordsList.innerHTML =
+        Array.isArray(results.missingKeywords) &&
+        results.missingKeywords.length > 0
+          ? results.missingKeywords
+              .map((keyword) => `<li>${keyword}</li>`)
+              .join("")
+          : "<li>No missing keywords found</li>";
     }
 
     // Update recommendations
-    const recommendationsList = document.getElementById('recommendationsList');
+    const recommendationsList = document.getElementById("recommendationsList");
     if (recommendationsList && Array.isArray(results.recommendations)) {
-        recommendationsList.innerHTML = results.recommendations
-            .map(rec => `<li>${rec}</li>`)
-            .join("") || "<li>No recommendations available</li>";
+      recommendationsList.innerHTML =
+        results.recommendations.map((rec) => `<li>${rec}</li>`).join("") ||
+        "<li>No recommendations available</li>";
     }
 
     // Show results section
     if (this.resultsSection) {
-        this.resultsSection.style.display = 'block';
+      this.resultsSection.style.display = "block";
     }
   }
 
-  generateRecommendations(matchPercentage, matchingKeywords, missingKeywords, resumeKeywords) {
+  generateRecommendations(
+    matchPercentage,
+    matchingKeywords,
+    missingKeywords,
+    resumeKeywords
+  ) {
     const recommendations = [];
 
     // Match percentage recommendations
     if (matchPercentage < 40) {
-        recommendations.push("⚠️ Your resume needs significant improvements to match this job's requirements.");
+      recommendations.push(
+        "⚠️ Your resume needs significant improvements to match this job's requirements."
+      );
     } else if (matchPercentage < 70) {
-        recommendations.push("📈 Your resume partially matches the job requirements but could be improved.");
+      recommendations.push(
+        "📈 Your resume partially matches the job requirements but could be improved."
+      );
     } else {
-        recommendations.push("✅ Your resume shows good alignment with the job requirements!");
+      recommendations.push(
+        "✅ Your resume shows good alignment with the job requirements!"
+      );
     }
 
     // Missing keywords recommendations
     if (missingKeywords.length > 0) {
-        recommendations.push(`🔧 Consider adding experience with: ${missingKeywords.join(', ')}`);
+      recommendations.push(
+        `🔧 Consider adding experience with: ${missingKeywords.join(", ")}`
+      );
     }
 
     // General recommendations
-    recommendations.push("📝 Ensure your resume highlights specific achievements");
+    recommendations.push(
+      "📝 Ensure your resume highlights specific achievements"
+    );
     recommendations.push("📊 Quantify your impact with metrics where possible");
-    recommendations.push("🎯 Make sure your technical skills section is prominent");
+    recommendations.push(
+      "🎯 Make sure your technical skills section is prominent"
+    );
 
     return recommendations;
   }
@@ -460,7 +494,7 @@ class ResumeOptimizer {
   showLoading(message = "Processing...") {
     // Add a loading class to the analyze button
     if (this.analyzeButton) {
-      this.analyzeButton.classList.add('loading');
+      this.analyzeButton.classList.add("loading");
       this.analyzeButton.disabled = true;
     }
 
@@ -475,7 +509,7 @@ class ResumeOptimizer {
   hideLoading() {
     // Remove loading state from analyze button
     if (this.analyzeButton) {
-      this.analyzeButton.classList.remove('loading');
+      this.analyzeButton.classList.remove("loading");
       this.analyzeButton.disabled = false;
     }
 
@@ -497,24 +531,24 @@ class ResumeOptimizer {
     const arrayBuffer = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
     let text = "";
-    
+
     for (let i = 1; i <= pdf.numPages; i++) {
       const page = await pdf.getPage(i);
       const content = await page.getTextContent();
-      text += content.items.map(item => item.str).join(" ");
+      text += content.items.map((item) => item.str).join(" ");
     }
-    
+
     return text;
   }
 
   async extractDocxText(file) {
     const arrayBuffer = await file.arrayBuffer();
     const result = await mammoth.extractRawText({ arrayBuffer });
-    
+
     if (!result.value) {
       throw new Error("No text content found in document");
     }
-    
+
     return result.value;
   }
 
@@ -537,7 +571,10 @@ class ResumeOptimizer {
   }
 
   isValidFileType(file) {
-    const allowedTypes = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+    const allowedTypes = [
+      "application/pdf",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ];
     return allowedTypes.includes(file.type);
   }
 
