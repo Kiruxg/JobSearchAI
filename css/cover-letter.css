@@ -297,59 +297,6 @@ h1 {
   color: #059669;
 }
 
-/* Toast Notification */
-.toast {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  padding: 1rem 1.5rem;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  animation: slide-in 0.3s ease-out;
-  z-index: 1000;
-}
-
-.toast.success {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  color: #059669;
-}
-
-.toast.success svg {
-  color: #059669;
-}
-
-.toast.fade-out {
-  animation: slide-out 0.3s ease-in forwards;
-}
-
-@keyframes slide-in {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slide-out {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-}
-
 /* File Preview Enhancements */
 .file-info {
   display: flex;

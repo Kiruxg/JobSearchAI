@@ -7,6 +7,31 @@ class CoverLetterGenerator {
       success: (msg) => console.log(`✅ [CoverLetter]: ${msg}`),
     };
 
+    // Add mission-related patterns
+    this.missionPatterns = [
+      /(?:our|company|organization)?\s*mission\s*(?:is|:)\s*(.*?)(?:\.|\n|$)/i,
+      /(?:we are|we're)\s+(?:dedicated|committed)\s+to\s+(.*?)(?:\.|\n|$)/i,
+      /(?:our|company|organization)?\s*purpose\s*(?:is|:)\s*(.*?)(?:\.|\n|$)/i,
+      /(?:our|company|organization)?\s*vision\s*(?:is|:)\s*(.*?)(?:\.|\n|$)/i,
+      /(?:we|company|organization)?\s*strive[s]?\s+to\s+(.*?)(?:\.|\n|$)/i,
+      /focused\s+on\s+(.*?)(?:\.|\n|$)/i
+    ];
+
+    this.missionIndicators = new Set([
+      "mission",
+      "vision",
+      "purpose",
+      "aim",
+      "goal",
+      "strive",
+      "dedicated to",
+      "committed to",
+      "focused on",
+      "seeks to",
+      "working to",
+      "aspires to"
+    ]);
+
     // Initialize after DOM is fully loaded
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", () => this.init());
@@ -557,11 +582,20 @@ class CoverLetterGenerator {
           .map((achievement) => `• ${achievement.trim()}`)
           .slice(0, 3)
           .join("\n");
-      } else {
-        achievements = `• Led development of responsive web applications\n• Improved application performance by 40%\n• Implemented modern UI/UX best practices`;
       }
 
-      const date = new Date().toLocaleDateString();
+      const date = new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric'
+      });
+
+      const mission = this.extractMissionStatement(data.jobDescription);
+      console.log('Extracted mission:', mission);
+
+      const closingParagraph = mission 
+        ? `I look forward to discussing how I can contribute to ${data.companyName}'s mission of ${mission}.`
+        : `I look forward to discussing how I can contribute to ${data.companyName}'s success.`;
 
       return `${date}
 
@@ -572,7 +606,7 @@ I am excited to apply for the ${data.jobTitle} position with ${data.companyName}
 As a ${currentRole}, I:
 ${achievements}
 
-I look forward to discussing how I can contribute to ${data.companyName}'s mission of ${companyMission}.
+${closingParagraph}
 
 Best regards,
 ${data.firstName} ${data.lastName}`.trim();
@@ -680,42 +714,11 @@ ${data.firstName} ${data.lastName}`.trim();
   }
 
   showError(message) {
-    const toast = document.createElement("div");
-    toast.className = "toast error";
-    toast.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="15" y1="9" x2="9" y2="15"></line>
-                <line x1="9" y1="9" x2="15" y2="15"></line>
-            </svg>
-            ${message}
-        `;
-
-    document.body.appendChild(toast);
-
-    setTimeout(() => {
-      toast.classList.add("fade-out");
-      setTimeout(() => toast.remove(), 300);
-    }, 3000);
+    this.showToast(message, 'error');
   }
 
   showSuccess(message) {
-    const toast = document.createElement("div");
-    toast.className = "toast success";
-    toast.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
-            ${message}
-        `;
-
-    document.body.appendChild(toast);
-
-    setTimeout(() => {
-      toast.classList.add("fade-out");
-      setTimeout(() => toast.remove(), 300);
-    }, 3000);
+    this.showToast(message, 'success');
   }
 
   updateFilePreview(file) {
@@ -748,6 +751,77 @@ ${data.firstName} ${data.lastName}`.trim();
         `;
     this.uploadPreview.classList.add("active");
     this.log.info(`Preview updated for file: ${file.name}`);
+  }
+
+  extractMissionStatement(jobDescription) {
+    // Split text into paragraphs
+    const paragraphs = jobDescription.split(/\n\n+/);
+    
+    // First, look for explicit mission statements
+    for (const pattern of this.missionPatterns) {
+      for (const paragraph of paragraphs) {
+        const match = paragraph.match(pattern);
+        if (match && match[1]) {
+          console.log('Found explicit mission statement:', match[1].trim());
+          return match[1].trim();
+        }
+      }
+    }
+
+    // Second, look for paragraphs with mission indicators
+    for (const paragraph of paragraphs) {
+      const words = paragraph.toLowerCase().split(/\s+/);
+      const hasMissionIndicator = words.some(word => 
+        this.missionIndicators.has(word) || 
+        [...this.missionIndicators].some(indicator => 
+          indicator.includes(' ') && paragraph.toLowerCase().includes(indicator)
+        )
+      );
+
+      if (hasMissionIndicator) {
+        console.log('Found mission-like statement:', paragraph.trim());
+        return paragraph.trim();
+      }
+    }
+
+    // Third, look for "about" section
+    const aboutIndex = jobDescription.toLowerCase().indexOf('about');
+    if (aboutIndex !== -1) {
+      const aboutSection = jobDescription.slice(aboutIndex, aboutIndex + 500);
+      const firstParagraph = aboutSection.split(/\n\n+/)[0];
+      console.log('Using about section:', firstParagraph.trim());
+      return firstParagraph.trim();
+    }
+
+    console.log('No mission statement found');
+    return '';
+  }
+
+  showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `
+        <div class="toast-content">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                ${type === 'success' 
+                    ? '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>'
+                    : '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>'
+                }
+            </svg>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    // Trigger animation
+    setTimeout(() => toast.classList.add('show'), 100);
+    
+    // Remove after delay
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
   }
 }
 

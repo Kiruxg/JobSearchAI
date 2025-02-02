@@ -254,43 +254,65 @@ class ResumeOptimizer {
     });
   }
 
-  async handleFileUpload(event) {
-    try {
-      const file = event.target.files[0];
-      if (!file) {
-        throw new Error("No file selected");
-      }
+  handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
 
-      // Validate file
-      if (!this.isValidFileType(file)) {
-        throw new Error("Invalid file type. Please upload a PDF or DOCX file");
-      }
-
-      if (!this.isValidFileSize(file)) {
-        throw new Error("File too large. Maximum size is 5MB");
-      }
-
-      this.showLoading("Reading file...");
-      this.resumeText = await this.extractTextFromFile(file);
-
-      if (!this.hasValidContent(this.resumeText)) {
-        throw new Error("Could not extract text from file");
-      }
-
-      // Show preview
-      const previewDiv = document.getElementById("filePreview");
-      previewDiv.textContent = `File loaded: ${file.name}`;
-      previewDiv.classList.add("active");
-
-      // Automatically run analysis if job description exists
-      if (this.jobDescriptionInput.value.trim()) {
-        await this.analyzeResume();
-      }
-    } catch (error) {
-      this.handleError("File Upload Error", error);
-    } finally {
-      this.hideLoading();
+    // Validate file type
+    const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    if (!validTypes.includes(file.type)) {
+        alert('Please upload a PDF or Word document');
+        return;
     }
+
+    // Store the file
+    this.uploadedFile = file;
+
+    // Update the preview
+    const previewElement = document.querySelector('.file-preview');
+    if (previewElement) {
+        previewElement.innerHTML = `
+            <div class="file-info">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                    <polyline points="13 2 13 9 20 9"></polyline>
+                </svg>
+                <span class="file-name">${file.name}</span>
+                <span class="upload-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    Uploaded
+                </span>
+            </div>
+        `;
+        previewElement.classList.add('active');
+    }
+
+    // Show success toast notification
+    const toast = document.createElement('div');
+    toast.className = 'toast success';
+    toast.innerHTML = `
+        <div class="toast-content">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span>Successfully uploaded ${file.name}</span>
+        </div>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    // Trigger animation
+    setTimeout(() => toast.classList.add('show'), 100);
+    
+    // Remove after delay
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
   }
 
   async analyzeResume() {
