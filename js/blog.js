@@ -135,7 +135,7 @@ class BlogManager {
 
     updatePostsVisibility() {
         const posts = this.blogGrid.querySelectorAll('.blog-card');
-        const startIndex = (this.currentPage - 1) * this.postsPerPage;
+        const startIndex = (this.currentPage — 1) * this.postsPerPage;
         const endIndex = startIndex + this.postsPerPage;
 
         posts.forEach((post, index) => {

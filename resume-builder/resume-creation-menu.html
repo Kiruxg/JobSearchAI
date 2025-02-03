@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Your Resume - JobGenie</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="../css/resume-builder.css" />
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico" />
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <a href="../index.html">
+          <img
+            src="../img/lampLogo.png"
+            alt="JobGenie Logo"
+            class="logo-image"
+          />
+          <div class="logo-text">JobGenie</div>
+        </a>
+      </nav>
+    </header>
+
+    <main class="resume-creation-menu">
+      <div class="menu-container">
+        <h1>How will you make your resume?</h1>
+
+        <div class="options-container">
+          <!-- Start from scratch option -->
+          <a href="resume-builder.html" class="option-card">
+            <div class="option-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+            </div>
+            <div class="option-content">
+              <h2>Start from scratch</h2>
+              <p>Our AI helper will guide you</p>
+            </div>
+          </a>
+
+          <!-- Upload existing resume option -->
+          <label class="option-card" for="resumeUpload">
+            <input
+              type="file"
+              id="resumeUpload"
+              accept=".pdf,.doc,.docx"
+              style="display: none"
+              onchange="handleResumeUpload(this)"
+            />
+            <div class="option-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="17 8 12 3 7 8" />
+                <line x1="12" y1="3" x2="12" y2="15" />
+              </svg>
+            </div>
+            <div class="option-content">
+              <h2>I already have a resume</h2>
+              <p>Upload document</p>
+            </div>
+          </label>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      function handleResumeUpload(input) {
+        if (input.files && input.files[0]) {
+          // Store the file in sessionStorage or send to backend
+          const file = input.files[0];
+
+          // Create a FormData object to send the file
+          const formData = new FormData();
+          formData.append("resume", file);
+
+          // Send to backend for processing
+          fetch("/api/extract-resume", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              // Store the extracted data
+              sessionStorage.setItem("resumeData", JSON.stringify(data));
+              // Redirect to builder with the data
+              window.location.href = "resume-builder.html?mode=autofill";
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              // Handle error appropriately
+            });
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -223,7 +223,7 @@ class LinkedInOptimizer {
         });
 
         return Object.entries(keywordCount)
-            .sort((a, b) => b[1] - a[1])
+            .sort((a, b) => b[1] — a[1])
             .slice(0, 10); // Limit to top 10 keywords for free users
     }
 
@@ -265,10 +265,10 @@ class LinkedInOptimizer {
         const startTime = performance.now();
 
         const animate = (currentTime) => {
-            const elapsed = currentTime - startTime;
+            const elapsed = currentTime — startTime;
             const progress = Math.min(elapsed / duration, 1);
 
-            const currentScore = Math.round(startScore + (targetScore - startScore) * progress);
+            const currentScore = Math.round(startScore + (targetScore — startScore) * progress);
             this.profileScore.textContent = currentScore;
 
             if (progress < 1) {

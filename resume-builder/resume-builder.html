@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resume Builder - JobGenie</title>
+    <link rel="stylesheet" href="../css/resume-builder.css" />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico" />
+  </head>
+  <body>
+    <div class="resume-builder-container">
+      <!-- Navigation Card -->
+      <div class="nav-card">
+        <h2>Resume Sections</h2>
+        <ul class="section-nav">
+          <li class="section-item active" data-section="personal">
+            <div class="drag-handle">☰</div>
+            <span>Personal Details</span>
+            <div class="completion-status"></div>
+          </li>
+          <li class="section-item" data-section="contact">
+            <div class="drag-handle">☰</div>
+            <span>Contact Information</span>
+            <div class="completion-status"></div>
+          </li>
+          <li class="section-item" data-section="employment">
+            <div class="drag-handle">☰</div>
+            <span>Employment History</span>
+            <div class="completion-status"></div>
+          </li>
+          <li class="section-item" data-section="education">
+            <div class="drag-handle">☰</div>
+            <span>Education</span>
+            <div class="completion-status"></div>
+          </li>
+          <li class="section-item" data-section="skills">
+            <div class="drag-handle">☰</div>
+            <span>Skills</span>
+            <div class="completion-status"></div>
+          </li>
+          <li class="section-item" data-section="links">
+            <div class="drag-handle">☰</div>
+            <span>Links</span>
+            <div class="completion-status"></div>
+          </li>
+          <li class="section-item" data-section="additional">
+            <div class="drag-handle">☰</div>
+            <span>Additional Information</span>
+            <div class="completion-status"></div>
+          </li>
+          <li class="section-item" data-section="summary">
+            <div class="drag-handle">☰</div>
+            <span>Professional Summary</span>
+            <div class="completion-status"></div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Form Card -->
+      <div class="form-card">
+        <!-- Personal Details Form -->
+        <form
+          id="personalForm"
+          class="section-form active"
+          onsubmit="return handleNextSection(event, 'contact')"
+        >
+          <h2>Personal Details</h2>
+          <p class="helper-text">Start with your basic information</p>
+
+          <div class="form-group">
+            <label for="firstName" class="required-field">First Name</label>
+            <input type="text" id="firstName" name="firstName" required />
+            <span class="error-message"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="lastName" class="required-field">Last Name</label>
+            <input type="text" id="lastName" name="lastName" required />
+            <span class="error-message"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="jobTitle">Desired Job Title</label>
+            <input type="text" id="jobTitle" name="jobTitle" />
+          </div>
+
+          <div class="form-navigation">
+            <button type="submit" class="btn-next">
+              Next: Contact Information
+            </button>
+          </div>
+        </form>
+
+        <!-- Contact Information Form -->
+        <form
+          id="contactForm"
+          class="section-form"
+          onsubmit="return handleNextSection(event, 'employment')"
+        >
+          <h2>Contact Information</h2>
+          <p class="helper-text">How can employers reach you?</p>
+
+          <div class="form-group">
+            <label for="email" class="required-field">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              placeholder="e.g., john.doe@example.com"
+            />
+            <span class="error-message"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="phone" class="required-field">Phone</label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              required
+              placeholder="e.g., +1 (555) 123-4567"
+            />
+            <span class="error-message"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="city" class="required-field">City</label>
+            <input
+              type="text"
+              id="city"
+              name="city"
+              required
+              placeholder="e.g., San Francisco"
+            />
+            <span class="error-message"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="country" class="required-field">Country</label>
+            <input
+              type="text"
+              id="country"
+              name="country"
+              required
+              placeholder="e.g., United States"
+            />
+            <span class="error-message"></span>
+          </div>
+
+          <div class="form-navigation">
+            <button
+              type="button"
+              class="btn-back"
+              data-previous="personal"
+            >
+              Back
+            </button>
+            <button type="submit" class="btn-next">
+              Next: Employment History
+            </button>
+          </div>
+        </form>
+
+        <!-- Employment History Form -->
+        <form
+          id="employmentForm"
+          class="section-form"
+          onsubmit="return handleNextSection(event, 'education')"
+        >
+          <h2>Employment History</h2>
+          <p class="helper-text">Tell us about your work experience</p>
+
+          <div id="employmentEntries">
+            <div class="employment-entry">
+              <div class="form-group">
+                <label for="jobTitle1" class="required-field">Job Title</label>
+                <input
+                  type="text"
+                  id="jobTitle1"
+                  name="jobTitle1"
+                  required
+                  placeholder="e.g., Software Engineer"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="employer1" class="required-field">Employer</label>
+                <input
+                  type="text"
+                  id="employer1"
+                  name="employer1"
+                  required
+                  placeholder="e.g., Google"
+                />
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="startDate1" class="required-field"
+                    >Start Date</label
+                  >
+                  <input
+                    type="month"
+                    id="startDate1"
+                    name="startDate1"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="endDate1">End Date</label>
+                  <input type="month" id="endDate1" name="endDate1" />
+                  <div class="checkbox-group">
+                    <input type="checkbox" id="current1" name="current1" />
+                    <label for="current1">I currently work here</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="description1" class="required-field"
+                  >Description</label
+                >
+                <textarea
+                  id="description1"
+                  name="description1"
+                  required
+                  rows="4"
+                  placeholder="Describe your responsibilities and achievements..."
+                ></textarea>
+                <button
+                  type="button"
+                  class="btn-feedback"
+                  onclick="analyzeDescription(1)"
+                >
+                  Get AI Feedback
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="btn-add" onclick="addEmploymentEntry()">
+            <svg width="16" height="16" viewBox="0 0 16 16">
+              <path d="M8 0v16M0 8h16" stroke="currentColor" stroke-width="2" />
+            </svg>
+            Add Another Position
+          </button>
+
+          <div class="form-navigation">
+            <button
+              type="button"
+              class="btn-back"
+              data-previous="contact"
+            >
+              Back
+            </button>
+            <button type="submit" class="btn-next">Next: Education</button>
+          </div>
+        </form>
+
+        <!-- Other forms will be dynamically shown/hidden -->
+      </div>
+
+      <!-- Preview Card -->
+      <div class="preview-card">
+        <div class="preview-header">
+          <!-- Template Selector in Preview Header -->
+          <div class="template-selector">
+            <button class="btn-template" aria-label="Select template">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.5 5.5v4h4v-4h-4zM11 4v7H4V4h7zm3.5 1.5v4h4v-4h-4zM20 4v7h-7V4h7zM5.5 14.5v4h4v-4h-4zM11 13v7H4v-7h7zm3.5 1.5v4h4v-4h-4zM20 13v7h-7v-7h7z"
+                />
+              </svg>
+              Select template
+            </button>
+            <div class="template-dropdown">
+              <div class="template-section">
+                <h3 class="template-section-title">Free Templates</h3>
+                <div class="template-grid">
+                  <button class="template-card" data-template="professional">
+                    <div class="template-preview">
+                      <div class="preview-mockup professional"></div>
+                    </div>
+                    <div class="template-info">
+                      <span class="template-name">Professional</span>
+                      <span class="template-tag">Most Popular</span>
+                    </div>
+                  </button>
+                  <button class="template-card" data-template="modern">
+                    <div class="template-preview">
+                      <div class="preview-mockup modern"></div>
+                    </div>
+                    <div class="template-info">
+                      <span class="template-name">Modern</span>
+                      <span class="template-tag">Creative</span>
+                    </div>
+                  </button>
+                  <button class="template-card" data-template="simple">
+                    <div class="template-preview">
+                      <div class="preview-mockup simple"></div>
+                    </div>
+                    <div class="template-info">
+                      <span class="template-name">Simple</span>
+                      <span class="template-tag">Clean</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              <div class="premium-section">
+                <div class="premium-content">
+                  <div class="premium-header">
+                    <h3>Upgrade to JobGenie Pro</h3>
+                    <span class="premium-tag">Premium</span>
+                  </div>
+                  <p>Get access to 10+ ATS-friendly templates</p>
+                  <ul class="premium-features">
+                    <li>✨ AI-powered content suggestions</li>
+                    <li>📱 Multiple format downloads</li>
+                    <li>🎯 ATS optimization tools</li>
+                  </ul>
+                  <button class="btn-upgrade">Upgrade Now</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="btn-download">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Download
+          </button>
+        </div>
+        <div class="preview-content template-professional">
+          <!-- Personal Details Section -->
+          <div class="preview-section" id="personalPreview">
+            <h1 class="preview-name"></h1>
+            <p class="preview-title"></p>
+          </div>
+
+          <!-- Contact Information Section -->
+          <div class="preview-section" id="contactPreview">
+            <div class="contact-details"></div>
+          </div>
+
+          <!-- Employment History Section -->
+          <div class="preview-section" id="employmentPreview">
+            <h2>Experience</h2>
+            <div class="employment-entries"></div>
+          </div>
+        </div>
+
+        <!-- Premium Features Card -->
+        <div class="premium-features">
+          <h3>Unlock Premium Features</h3>
+          <p class="price">Starting at $14.95/month</p>
+          <ul>
+            <li>✓ No watermark</li>
+            <li>✓ Unlimited ATS optimization + AI feedback</li>
+            <li>✓ AI-Powered Cover Letter Generator</li>
+            <li>✓ AI Interview Prep with Voice</li>
+            <li>✓ Automated Job Tracker</li>
+            <li>✓ LinkedIn Profile Optimizer</li>
+          </ul>
+          <button class="btn-upgrade">Upgrade Now</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../js/resume-builder.js"></script>
+  </body>
+</html>

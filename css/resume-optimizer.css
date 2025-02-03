@@ -415,28 +415,37 @@
 }
 
 /* Analyze Button */
-.analyze-button {
-  background-color: #2563eb;
+#analyzeResume {
+  width: 100%;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
   color: white;
-  padding: 1rem 2rem;
+  background: linear-gradient(90deg, #007bff, #0056b3);
   border: none;
   border-radius: 6px;
-  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: 100%;
-  max-width: 300px;
-  margin: 0 auto;
-  display: block;
+  transition: all 0.3s ease;
+  margin-top: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.analyze-button:hover {
-  background-color: #1d4ed8;
+#analyzeResume:hover {
+  background: linear-gradient(90deg, #0056b3, #004494);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.analyze-button:disabled {
-  background-color: #93c5fd;
+#analyzeResume:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#analyzeResume:disabled {
+  background: #cccccc;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 /* Results Section */
@@ -589,3 +598,5 @@
     font-size: 2rem;
   }
 }
+
+

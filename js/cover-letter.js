@@ -392,7 +392,7 @@ class CoverLetterGenerator {
 
       // Sort by frequency and get top 2
       const topSkills = Array.from(keywordCounts.entries())
-        .sort((a, b) => b[1] - a[1])
+        .sort((a, b) => b[1] — a[1])
         .slice(0, 2)
         .map(([skill]) => skill);
 
@@ -530,7 +530,7 @@ class CoverLetterGenerator {
 
       this.log.info("Extracting current company from resume");
       // Add your logic here to extract the current company
-      // This is a placeholder - implement actual extraction logic
+      // This is a placeholder — implement actual extraction logic
       return "my current company";
     } catch (error) {
       this.log.error("Error extracting current company:", error);

@@ -1,141 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JobGenie - Interview Preparation</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/interview-prep.css">
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JobGenie — Interview Preparation</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/interview-prep.css" />
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
+  </head>
+  <body>
     <header>
-        <nav>
-          <a href="index.html">
-            <img src="img/lampLogo.png" alt="JobGenie Logo" class="logo-image">
-            <div class="logo-text">JobGenie</div>
-          </a>
-          <div class="nav-links">
-            <ul class="nav-menu">
-              <li class="nav-item">
-                <a href="resume-optimizer.html" class="nav-link">ATS Scanner</a>
-              </li>
-              <li class="nav-item">
-                <a href="cover-letter.html" class="nav-link"
-                  >Cover Letter Generator</a
-                >
-              </li>
-              <li class="nav-item">
-                <a href="interview-prep.html" class="nav-link active">AI Interview Prep</a>
-              </li>
-              <li class="nav-item">
-                <a href="job-tracker.html" class="nav-link">Job Tracker</a>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </header>
+      <nav>
+        <a href="index.html">
+          <img src="img/lampLogo.png" alt="JobGenie Logo" class="logo-image" />
+          <div class="logo-text">JobGenie</div>
+        </a>
+        <div class="nav-links">
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="resume-optimizer.html" class="nav-link">ATS Scanner</a>
+            </li>
+            <li class="nav-item">
+              <a href="cover-letter.html" class="nav-link"
+                >Cover Letter Generator</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="interview-prep.html" class="nav-link active"
+                >AI Interview Prep</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="job-tracker.html" class="nav-link">Job Tracker</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
 
     <main class="interview-container">
-        <div class="prep-header">
-            <h1>Interview Preparation</h1>
-            <div class="session-stats">
-                <span class="stat">Questions: <span id="questionCount">0</span></span>
-                <span class="stat">Progress: <span id="progressScore">0%</span></span>
-                <span class="stat">Time: <span id="sessionTime">00:00</span></span>
-            </div>
+      <div class="prep-header">
+        <h1>Interview Preparation</h1>
+        <div class="session-stats">
+          <span class="stat">Questions: <span id="questionCount">0</span></span>
+          <span class="stat">Progress: <span id="progressScore">0%</span></span>
+          <span class="stat">Time: <span id="sessionTime">00:00</span></span>
+        </div>
+      </div>
+
+      <div class="prep-content">
+        <!-- Job Description Section -->
+        <div class="job-description-section">
+          <h2>Job Description</h2>
+          <div class="description-input">
+            <textarea
+              id="jobDescription"
+              placeholder="Paste the job description here to get tailored interview questions..."
+              rows="8"
+            ></textarea>
+            <button id="startPrep" class="primary-button">
+              Start Interview Prep
+            </button>
+          </div>
         </div>
 
-        <div class="prep-content">
-            <!-- Job Description Section -->
-            <div class="job-description-section">
-                <h2>Job Description</h2>
-                <div class="description-input">
-                    <textarea 
-                        id="jobDescription" 
-                        placeholder="Paste the job description here to get tailored interview questions..."
-                        rows="8"
-                    ></textarea>
-                    <button id="startPrep" class="primary-button">Start Interview Prep</button>
-                </div>
+        <!-- Interview Chat Section -->
+        <div class="interview-chat-section">
+          <div class="chat-container">
+            <div id="chatMessages" class="chat-messages">
+              <!-- Messages will be inserted here -->
+              <div class="message system">
+                Welcome to JobGenie Interview Prep! Paste a job description to
+                begin your personalized interview session.
+              </div>
             </div>
-
-            <!-- Interview Chat Section -->
-            <div class="interview-chat-section">
-                <div class="chat-container">
-                    <div id="chatMessages" class="chat-messages">
-                        <!-- Messages will be inserted here -->
-                        <div class="message system">
-                            Welcome to JobGenie Interview Prep! Paste a job description to begin your personalized interview session.
-                        </div>
-                    </div>
-                    <div class="chat-input">
-                        <textarea 
-                            id="userResponse" 
-                            placeholder="Type your response here..."
-                            rows="3"
-                        ></textarea>
-                        <button id="sendResponse" class="primary-button">Send Response</button>
-                    </div>
-                </div>
-
-                <!-- Interview Progress Panel -->
-                <div class="progress-panel">
-                    <h3>Session Progress</h3>
-                    <div class="progress-bar">
-                        <div id="progressBar" class="progress" style="width: 0%"></div>
-                    </div>
-                    <div class="topic-list">
-                        <h4>Topics Covered</h4>
-                        <ul id="topicsList">
-                            <!-- Topics will be inserted here -->
-                        </ul>
-                    </div>
-                    <div class="improvement-tips">
-                        <h4>Quick Tips</h4>
-                        <ul>
-                            <li>Use the STAR method for behavioral questions</li>
-                            <li>Provide specific examples</li>
-                            <li>Keep responses concise and focused</li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="chat-input">
+              <textarea
+                id="userResponse"
+                placeholder="Type your response here..."
+                rows="3"
+              ></textarea>
+              <button id="sendResponse" class="primary-button">
+                Send Response
+              </button>
             </div>
+          </div>
+
+          <!-- Interview Progress Panel -->
+          <div class="progress-panel">
+            <h3>Session Progress</h3>
+            <div class="progress-bar">
+              <div id="progressBar" class="progress" style="width: 0%"></div>
+            </div>
+            <div class="topic-list">
+              <h4>Topics Covered</h4>
+              <ul id="topicsList">
+                <!-- Topics will be inserted here -->
+              </ul>
+            </div>
+            <div class="improvement-tips">
+              <h4>Quick Tips</h4>
+              <ul>
+                <li>Use the STAR method for behavioral questions</li>
+                <li>Provide specific examples</li>
+                <li>Keep responses concise and focused</li>
+              </ul>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <!-- Session Summary Modal -->
-        <div id="summaryModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Interview Session Summary</h2>
-                <div class="summary-content">
-                    <div class="summary-section">
-                        <h3>Strengths</h3>
-                        <ul id="strengthsList">
-                            <!-- Strengths will be inserted here -->
-                        </ul>
-                    </div>
-                    <div class="summary-section">
-                        <h3>Areas for Improvement</h3>
-                        <ul id="improvementsList">
-                            <!-- Improvements will be inserted here -->
-                        </ul>
-                    </div>
-                    <div class="summary-section">
-                        <h3>Next Steps</h3>
-                        <ul id="nextStepsList">
-                            <!-- Next steps will be inserted here -->
-                        </ul>
-                    </div>
-                </div>
-                <div class="summary-actions">
-                    <button id="downloadSummary" class="secondary-button">Download Summary</button>
-                    <button id="newSession" class="primary-button">Start New Session</button>
-                </div>
+      <!-- Session Summary Modal -->
+      <div id="summaryModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>Interview Session Summary</h2>
+          <div class="summary-content">
+            <div class="summary-section">
+              <h3>Strengths</h3>
+              <ul id="strengthsList">
+                <!-- Strengths will be inserted here -->
+              </ul>
             </div>
+            <div class="summary-section">
+              <h3>Areas for Improvement</h3>
+              <ul id="improvementsList">
+                <!-- Improvements will be inserted here -->
+              </ul>
+            </div>
+            <div class="summary-section">
+              <h3>Next Steps</h3>
+              <ul id="nextStepsList">
+                <!-- Next steps will be inserted here -->
+              </ul>
+            </div>
+          </div>
+          <div class="summary-actions">
+            <button id="downloadSummary" class="secondary-button">
+              Download Summary
+            </button>
+            <button id="newSession" class="primary-button">
+              Start New Session
+            </button>
+          </div>
         </div>
+      </div>
     </main>
 
     <script src="js/interview-prep.js"></script>
-</body>
-</html> 
+  </body>
+</html>

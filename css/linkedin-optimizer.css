@@ -65,7 +65,7 @@
     border: none;
     border-radius: 6px;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -119,6 +119,7 @@
     align-items: center;
     justify-content: center;
     margin: 0 auto;
+    padding: 70px;
 }
 
 #profileScore {
