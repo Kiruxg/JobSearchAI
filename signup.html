@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | JobGenie</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-box">
+            <div class="auth-header">
+                <a href="index.html" class="logo">
+                    <img src="img/lampLogo.png" alt="JobGenie Logo" class="auth-logo">
+                </a>
+                <h1>Create your account</h1>
+                <p>Start optimizing your job search today</p>
+            </div>
+
+            <form class="auth-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First name</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last name</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-input">
+                        <input type="password" id="password" name="password" required>
+                        <button type="button" class="toggle-password">Show</button>
+                    </div>
+                    <div class="password-requirements">
+                        <p>Password must contain:</p>
+                        <ul>
+                            <li>At least 8 characters</li>
+                            <li>One uppercase letter</li>
+                            <li>One number</li>
+                            <li>One special character</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <button type="submit" class="auth-button">Create Account</button>
+
+                <div class="social-auth">
+                    <span class="divider">Or sign up with</span>
+                    <div class="social-buttons">
+                        <button type="button" class="social-button google">
+                            <img src="img/google-icon.svg" alt="Google">
+                            Google
+                        </button>
+                        <button type="button" class="social-button linkedin">
+                            <img src="img/linkedin-icon.svg" alt="LinkedIn">
+                            LinkedIn
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <p class="auth-footer">
+                Already have an account? <a href="login.html">Log in</a>
+            </p>
+
+            <p class="terms">
+                By signing up, you agree to our 
+                <a href="terms.html">Terms of Service</a> and 
+                <a href="privacy.html">Privacy Policy</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html> 

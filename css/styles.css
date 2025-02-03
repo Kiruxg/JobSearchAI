@@ -40,16 +40,10 @@ header nav > a {
 }
 
 /* Logo image */
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
 .logo-image {
-  height: 24px;
+  height: 25px;
   width: auto;
-  vertical-align: sub;
+  vertical-align: middle;
 }
 
 a {
@@ -342,6 +336,14 @@ section {
     .hero-cta {
         flex-direction: column;
     }
+
+    .logo {
+        flex-shrink: 0;
+    }
+    
+    .logo-image {
+        height: 28px;
+    }
 }
 
 /* Features Section */
@@ -451,18 +453,17 @@ footer {
 
 /* Resume Optimizer Nav Styles */
 .navbar {
-  display: flex;
-  align-items: center;
-  padding: 0.75rem 2rem;
-  background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(8px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  background: white;
+  padding: 16px 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
-  height: 60px;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .nav-container {
@@ -762,23 +763,41 @@ html {
 }
 
 /* Features Section */
-.feature-icon {
-    font-size: 24px;
-    margin-right: 12px;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.feature h3 {
-    display: inline-block;
-    vertical-align: middle;
-    margin: 0;
-}
-
 .feature {
     background: white;
     padding: 32px;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
+}
+
+.feature h3 {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    font-size: 20px;
+    color: #1a1a1a;
+}
+
+.feature-icon {
+    font-size: 24px;
+    margin-right: 6px;
+    flex-shrink: 0;
+    padding-top: 2px;
+}
+
+.feature-title {
+    display: inline-block;
+    white-space: normal;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .feature h3 {
+        font-size: 18px;
+    }
+    
+    .feature-icon {
+        font-size: 20px;
+    }
 }
