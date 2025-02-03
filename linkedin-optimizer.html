@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobGenie - LinkedIn Optimizer</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/linkedin-optimizer.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+              <a href="index.html">
+                <img src="img/lampLogo.png" alt="JobGenie Logo" class="logo-image" />
+                <div class="logo-text">JobGenie</div>
+              </a>
+              <ul class="nav-menu">
+                <li class="nav-item">
+                  <a href="resume-optimizer.html" class="nav-link">ATS Scanner</a>
+                </li>
+                <li class="nav-item">
+                  <a href="cover-letter.html" class="nav-link"
+                    >Cover Letter Generator</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a href="/interview-prep" class="nav-link">AI Interview Prep</a>
+                </li>
+                <li class="nav-item">
+                  <a href="job-tracker.html" class="nav-link">Job Tracker</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+    </header>
+
+    <main class="optimizer-container">
+        <div class="optimizer-header">
+            <h1>LinkedIn Profile Optimizer</h1>
+            <p>Enhance your LinkedIn presence and attract recruiters</p>
+        </div>
+
+        <div class="optimizer-content">
+            <!-- Profile Input Section -->
+            <div class="section-inputs">
+                <h2>Profile Analysis</h2>
+                
+                <div class="input-group">
+                    <label for="linkedinUrl">LinkedIn Profile URL (optional)</label>
+                    <input 
+                        type="url" 
+                        id="linkedinUrl" 
+                        placeholder="https://www.linkedin.com/in/your-profile"
+                        class="url-input"
+                    >
+                    <button id="fetchProfile" class="secondary-button">Import Profile</button>
+                </div>
+
+                <div class="input-separator">
+                    <span>OR</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="profileHeadline">Current LinkedIn Headline</label>
+                    <textarea 
+                        id="profileHeadline" 
+                        placeholder="Enter your current LinkedIn headline..."
+                        rows="2"
+                    ></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="aboutSection">About Section</label>
+                    <textarea 
+                        id="aboutSection" 
+                        placeholder="Paste your LinkedIn 'About' section here..."
+                        rows="6"
+                    ></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="skillsList">Key Skills (comma-separated)</label>
+                    <textarea 
+                        id="skillsList" 
+                        placeholder="Enter your skills, separated by commas..."
+                        rows="3"
+                    ></textarea>
+                </div>
+
+                <button id="analyzeProfile" class="primary-button">Analyze Profile</button>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="results-panel">
+                <div class="profile-score">
+                    <div class="score-circle">
+                        <span id="profileScore">0</span>
+                        <span class="score-label">Profile Score</span>
+                    </div>
+                </div>
+                
+                <div class="optimization-tips">
+                    <h3>Optimization Tips</h3>
+                    <div id="tipsList" class="tips-list">
+                        <!-- Tips will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Checklist Section -->
+        <div class="checklist-section">
+            <h2>Profile Checklist</h2>
+            <div class="checklist-grid">
+                <div class="checklist-card">
+                    <h3>Profile Basics</h3>
+                    <ul id="basicsChecklist" class="checklist">
+                        <li>Professional profile photo</li>
+                        <li>Custom background image</li>
+                        <li>Customized URL</li>
+                        <li>Location updated</li>
+                    </ul>
+                </div>
+                <div class="checklist-card">
+                    <h3>Content Quality</h3>
+                    <ul id="contentChecklist" class="checklist">
+                        <li>Compelling headline</li>
+                        <li>Detailed about section</li>
+                        <li>Recent activity</li>
+                        <li>Media attachments</li>
+                    </ul>
+                </div>
+                <div class="checklist-card">
+                    <h3>Network Building</h3>
+                    <ul id="networkChecklist" class="checklist">
+                        <li>Industry connections</li>
+                        <li>Group participation</li>
+                        <li>Recommendations</li>
+                        <li>Endorsements</li>
+                    </ul>
+                </div>
+                <div class="checklist-card">
+                    <h3>SEO & Keywords</h3>
+                    <ul id="seoChecklist" class="checklist">
+                        <li>Industry keywords</li>
+                        <li>Skills optimization</li>
+                        <li>Search visibility</li>
+                        <li>Profile completeness</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Keyword Analysis -->
+        <div class="keyword-section">
+            <h2>Keyword Analysis</h2>
+            <div class="keyword-content">
+                <div class="keyword-cloud" id="keywordCloud">
+                    <!-- Keywords will be displayed here -->
+                </div>
+                <div class="keyword-suggestions">
+                    <h3>Recommended Keywords</h3>
+                    <div id="keywordSuggestions" class="suggestions-list">
+                        <!-- Keyword suggestions will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pro Features Promotion -->
+    <div class="pro-features">
+        <h2>Unlock Advanced Features</h2>
+        <div class="features-grid">
+            <div class="feature-item">
+                <h3>AI Content Suggestions</h3>
+                <p>Get personalized content recommendations for each section</p>
+            </div>
+            <div class="feature-item">
+                <h3>Advanced Analytics</h3>
+                <p>Detailed profile performance metrics and visibility score</p>
+            </div>
+            <div class="feature-item">
+                <h3>Industry Benchmarking</h3>
+                <p>Compare your profile against industry leaders</p>
+            </div>
+            <div class="feature-item">
+                <h3>Weekly Optimization Tips</h3>
+                <p>Regular updates to keep your profile competitive</p>
+            </div>
+        </div>
+        <a href="pricing.html" class="upgrade-button">Upgrade to Pro</a>
+    </div>
+</main>
+
+<script src="js/linkedin-optimizer.js"></script>
+</body>
+</html>

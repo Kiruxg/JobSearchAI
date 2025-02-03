@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobGenie Blog - Career Insights & Tips</title>
+    <link rel="stylesheet" href="css/blog.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+              <a href="index.html">
+                <img src="img/lampLogo.png" alt="JobGenie Logo" class="logo-image" />
+                <div class="logo-text">JobGenie</div>
+              </a>
+              <ul class="nav-menu">
+                <li class="nav-item">
+                  <a href="resume-optimizer.html" class="nav-link">ATS Scanner</a>
+                </li>
+                <li class="nav-item">
+                  <a href="cover-letter.html" class="nav-link"
+                    >Cover Letter Generator</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a href="/interview-prep" class="nav-link">AI Interview Prep</a>
+                </li>
+                <li class="nav-item">
+                  <a href="job-tracker.html" class="nav-link">Job Tracker</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+    </header>
+
+    <main class="blog-dashboard">
+        <div class="blog-header">
+            <h1>Career Insights & Tips</h1>
+            <p class="blog-description">Expert advice to help you land your dream job</p>
+            
+            <div class="blog-filters">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search articles..." id="searchInput">
+                </div>
+                <div class="category-tabs">
+                    <button class="category-tab active" data-category="all">All</button>
+                    <button class="category-tab" data-category="interviews">Interviews</button>
+                    <button class="category-tab" data-category="resume">Resume</button>
+                    <button class="category-tab" data-category="linkedin">LinkedIn</button>
+                    <button class="category-tab" data-category="job-search">Job Search</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="featured-post">
+            <div class="featured-content">
+                <span class="featured-label">Featured Article</span>
+                <h2>The Ultimate Job Search Strategy for 2024</h2>
+                <p>A comprehensive guide to navigating the modern job market, leveraging AI tools, and landing your dream job.</p>
+                <div class="post-meta">
+                    <span class="post-category">Job Search</span>
+                    <span class="post-date">March 15, 2024</span>
+                    <span class="read-time">12 min read</span>
+                </div>
+                <a href="ultimate-job-search-2024.html" class="read-more">Read Article →</a>
+            </div>
+            <div class="featured-image">
+                <img src="../images/blog/featured-post.jpg" alt="Job Search Strategy">
+            </div>
+        </div>
+
+        <div class="posts-grid">
+            <article class="post-card">
+                <img src="../img/star.png" alt="STAR Method Guide">
+                <div class="post-content">
+                    <span class="post-category">Interviews</span>
+                    <h3>Master the STAR Method: Real Examples</h3>
+                    <p>Learn how to structure your interview responses using the STAR method with practical examples.</p>
+                    <div class="post-meta">
+                        <span class="post-date">March 12, 2024</span>
+                        <span class="read-time">10 min read</span>
+                    </div>
+                    <a href="star-method-guide.html" class="read-more">Read More →</a>
+                </div>
+            </article>
+
+            <article class="post-card">
+                <img src="../images/blog/resume-tips.jpg" alt="ATS Resume Templates">
+                <div class="post-content">
+                    <span class="post-category">Resume</span>
+                    <h3>10 ATS-Friendly Resume Templates for 2024</h3>
+                    <p>Create resumes that pass Applicant Tracking Systems and impress recruiters.</p>
+                    <div class="post-meta">
+                        <span class="post-date">March 10, 2024</span>
+                        <span class="read-time">8 min read</span>
+                    </div>
+                    <a href="ats-resume-templates-2024.html" class="read-more">Read More →</a>
+                </div>
+            </article>
+
+            <article class="post-card">
+                <img src="../images/blog/linkedin-optimization.jpg" alt="LinkedIn Profile Tips">
+                <div class="post-content">
+                    <span class="post-category">LinkedIn</span>
+                    <h3>LinkedIn Profile Optimization Guide 2024</h3>
+                    <p>Step-by-step guide to create a LinkedIn profile that attracts recruiters.</p>
+                    <div class="post-meta">
+                        <span class="post-date">March 8, 2024</span>
+                        <span class="read-time">15 min read</span>
+                    </div>
+                    <a href="linkedin-optimization-2024.html" class="read-more">Read More →</a>
+                </div>
+            </article>
+
+            <!-- Add more post cards as needed -->
+        </div>
+
+        <div class="pagination">
+            <button class="pagination-btn" disabled>←</button>
+            <span class="page-number active">1</span>
+            <span class="page-number">2</span>
+            <span class="page-number">3</span>
+            <button class="pagination-btn">→</button>
+        </div>
+    </main>
+
+    <script src="../js/blog.js"></script>
+</body>
+</html>

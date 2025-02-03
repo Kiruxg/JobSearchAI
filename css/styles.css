@@ -31,7 +31,6 @@ header nav {
 /* Logo side */
 header nav > a {
   display: flex;
-  align-items: center;
   text-decoration: none !important;
   padding: 0.5rem;
   border-radius: 6px;
@@ -41,14 +40,16 @@ header nav > a {
 }
 
 /* Logo image */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .logo-image {
-  object-fit: contain;
-  max-width: 30px !important;
-  max-height: 30px !important;
-  display: inline-block;
+  height: 24px;
+  width: auto;
   vertical-align: sub;
-  border-radius: 6px;
-  transform: none !important;
 }
 
 a {
@@ -151,15 +152,24 @@ section {
 }
 
 .feature-card {
-  padding: 2rem;
+  text-decoration: none;
+  color: inherit;
   background: white;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
 }
 
 .feature-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.feature-card:active {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
 }
 
 .feature-card h3 {
