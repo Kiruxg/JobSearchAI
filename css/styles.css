@@ -575,15 +575,15 @@ footer {
 }
 
 .toast.success {
-  background-color: #10B981;
+  background-color: #10b981;
 }
 
 .toast.error {
-  background-color: #EF4444;
+  background-color: #ef4444;
 }
 
 .toast.info {
-  background-color: #3B82F6;
+  background-color: #3b82f6;
 }
 
 .toast.hide {
@@ -775,4 +775,84 @@ html {
   .feature-icon {
     font-size: 20px;
   }
+}
+
+/* File Preview Card */
+.file-preview-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border: 2px dashed #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+  width: 100%;
+  max-width: 300px; /* Match upload-box width */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  animation: slideIn 0.3s ease;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.file-icon {
+  color: #ef4444;
+  font-size: 20px;
+}
+
+.file-name {
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.success-icon {
+  color: #10b981;
+  font-size: 20px;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Score Display */
+.score-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: #3b82f6;
+  color: white;
+}
+
+.score-number {
+  font-size: 32px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.score-number::after {
+  content: "%";
+  font-size: 20px;
+  font-weight: normal;
+}
+
+.score-label {
+  font-size: 14px;
+  margin-top: 4px;
 }

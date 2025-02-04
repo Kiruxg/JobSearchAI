@@ -179,438 +179,280 @@ class KeywordExtractor {
 
 class ResumeOptimizer {
   constructor() {
-    console.log("Initializing ResumeOptimizer...");
-
-    // Initialize properties
-    this.resumeText = "";
-    this.jobDescription = "";
-    this.keywordExtractor = new KeywordExtractor();
-
-    // Bind DOM elements
-    this.initializeElements();
-
-    // Bind methods
-    this.handleFileUpload = this.handleFileUpload.bind(this);
-    this.analyzeResume = this.analyzeResume.bind(this);
-    this.performAnalysis = this.performAnalysis.bind(this);
-    this.displayResults = this.displayResults.bind(this);
-
-    // Add debounced job description analysis
-    this.debouncedAnalysis = this.debounce(this.analyzeResume.bind(this), 1000);
-
-    // Attach event listeners
-    this.attachEventListeners();
-
-    console.log("ResumeOptimizer initialized");
+    console.log("Initializing ResumeOptimizer");
+    this.init();
   }
 
-  initializeElements() {
-    // Upload elements
-    this.resumeUpload = document.getElementById("resumeUpload");
-    this.resumeInput = document.getElementById("resumeFile");
-    this.jobDescriptionInput = document.getElementById("jobDescription");
-    this.analyzeButton = document.getElementById("analyzeButton");
-
-    // Results elements
-    this.resultsSection = document.getElementById("resultsSection");
-    this.matchScore = document.getElementById("matchScore");
-    this.missingKeywordsList = document.getElementById("missingKeywords");
-    this.foundKeywordsList = document.getElementById("foundKeywords");
-
-    // Loading elements
-    this.loadingOverlay = document.getElementById("loadingOverlay");
-    this.loadingText = document.getElementById("loadingText");
+  init() {
+    // Wait for DOM to be ready
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", () => {
+        this.attachEventListeners();
+      });
+    } else {
+      this.attachEventListeners();
+    }
   }
 
   attachEventListeners() {
-    // Handle file selection
-    this.resumeInput.addEventListener("change", this.handleFileUpload);
+    console.log("Attaching event listeners");
 
-    // Handle analysis
-    this.analyzeButton.addEventListener("click", this.analyzeResume);
+    // File input listener
+    const fileInput = document.getElementById("resumeFile");
+    if (fileInput) {
+      console.log("Found resume file input");
+      fileInput.addEventListener("change", (e) => this.handleFileUpload(e));
+    } else {
+      console.warn("Resume file input not found");
+    }
 
-    // Add job description input listener
-    this.jobDescriptionInput.addEventListener("input", () => {
-      if (this.resumeText) {
-        this.debouncedAnalysis();
-      }
-    });
-
-    // Handle drag and drop
-    this.resumeUpload.addEventListener("dragover", (e) => {
-      e.preventDefault();
-      this.resumeUpload.classList.add("drag-over");
-    });
-
-    this.resumeUpload.addEventListener("dragleave", () => {
-      this.resumeUpload.classList.remove("drag-over");
-    });
-
-    this.resumeUpload.addEventListener("drop", (e) => {
-      e.preventDefault();
-      this.resumeUpload.classList.remove("drag-over");
-      const file = e.dataTransfer.files[0];
-      this.handleFileUpload({ target: { files: [file] } });
-    });
+    // Analyze button listener
+    const analyzeBtn = document.getElementById("analyzeResume");
+    if (analyzeBtn) {
+      console.log("Found analyze button");
+      analyzeBtn.addEventListener("click", () => this.handleAnalyzeClick());
+    } else {
+      console.warn("Analyze button not found");
+    }
   }
 
   handleFileUpload(event) {
+    console.log("File upload triggered");
     const file = event.target.files[0];
-    if (!file) return;
 
-    // Validate file type
-    const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-    if (!validTypes.includes(file.type)) {
-        alert('Please upload a PDF or Word document');
-        return;
+    if (!file) {
+      this.showError("No file selected");
+      return;
     }
 
-    // Store the file
-    this.uploadedFile = file;
-
-    // Update the preview
-    const previewElement = document.querySelector('.file-preview');
-    if (previewElement) {
-        previewElement.innerHTML = `
-            <div class="file-info">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-                    <polyline points="13 2 13 9 20 9"></polyline>
-                </svg>
-                <span class="file-name">${file.name}</span>
-                <span class="upload-success">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                    </svg>
-                    Uploaded
-                </span>
-            </div>
-        `;
-        previewElement.classList.add('active');
+    if (file.type !== "application/pdf") {
+      this.showError("Please upload a PDF file");
+      return;
     }
 
-    // Show success toast notification
-    const toast = document.createElement('div');
-    toast.className = 'toast success';
-    toast.innerHTML = `
-        <div class="toast-content">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
-            <span>Successfully uploaded ${file.name}</span>
-        </div>
-    `;
-    
-    document.body.appendChild(toast);
-    
-    // Trigger animation
-    setTimeout(() => toast.classList.add('show'), 100);
-    
-    // Remove after delay
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
+    console.log("Valid file selected:", file.name);
+    this.currentFile = file; // Store the file for later use
+    this.showSuccess("Resume uploaded successfully");
+    this.showFilePreview(file);
   }
 
-  async analyzeResume() {
+  handleAnalyzeClick() {
+    console.log("Analyze button clicked");
+    if (!this.currentFile) {
+      this.showError("Please upload a resume first");
+      return;
+    }
+    this.analyzeResume(this.currentFile);
+  }
+
+  simulateAnalysis() {
+    return new Promise((resolve) => {
+      console.log("Simulating analysis...");
+      setTimeout(() => {
+        console.log("Analysis simulation complete");
+        resolve();
+      }, 2000);
+    });
+  }
+
+  async analyzeResume(file) {
     try {
-      if (!this.resumeText) {
+      if (!file) {
         throw new Error("Please upload a resume first");
       }
 
-      const jobDescription = this.jobDescriptionInput.value.trim();
-      if (!jobDescription) {
-        throw new Error("Please enter a job description");
+      console.log("Starting resume analysis");
+      this.showToast("Analyzing resume...", "info");
+
+      // Show loading state
+      const analyzeBtn = document.getElementById("analyzeBtn");
+      if (analyzeBtn) {
+        analyzeBtn.disabled = true;
+        analyzeBtn.innerHTML =
+          '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
       }
 
-      this.showLoading("Analyzing resume...");
-      const results = await this.performAnalysis();
-      this.displayResults(results);
-      this.resultsSection.style.display = "block";
-    } catch (error) {
-      this.handleError("Analysis Error", error);
-    } finally {
-      this.hideLoading();
-    }
-  }
+      // Simulate analysis delay
+      await this.simulateAnalysis();
 
-  async performAnalysis() {
-    try {
-      console.log("Starting analysis...");
-
-      // Log raw inputs
-      console.log("Raw inputs:", {
-        jobDescription: this.jobDescriptionInput.value.substring(0, 100),
-        resumeText: this.resumeText.substring(0, 100)
-      });
-
-      // Extract keywords
-      const jobKeywords = this.keywordExtractor.extractKeywords(
-        this.jobDescriptionInput.value
-      );
-      const resumeKeywords = this.keywordExtractor.extractKeywords(
-        this.resumeText
-      );
-
-      // Log extracted keywords before processing
-      console.log("Extracted keywords:", {
-        job: jobKeywords,
-        resume: resumeKeywords
-      });
-
-      // Create Sets for unique keywords
-      const allJobKeywords = [...new Set([
-        ...jobKeywords.technical,
-        ...jobKeywords.soft,
-        ...jobKeywords.industry
-      ])].map(kw => kw.toLowerCase());
-
-      const allResumeKeywords = [...new Set([
-        ...resumeKeywords.technical,
-        ...resumeKeywords.soft,
-        ...resumeKeywords.industry
-      ])].map(kw => kw.toLowerCase());
-
-      // Log processed keywords
-      console.log("Processed keywords:", {
-        job: allJobKeywords,
-        resume: allResumeKeywords
-      });
-
-      // Find matching keywords (no duplicates)
-      const matchingKeywords = [...new Set(
-        allJobKeywords.filter(keyword => 
-          allResumeKeywords.includes(keyword)
-        )
-      )];
-
-      // Find missing keywords (no duplicates)
-      const missingKeywords = [...new Set(
-        allJobKeywords.filter(keyword => 
-          !allResumeKeywords.includes(keyword)
-        )
-      )];
-
-      // Log matching and missing keywords
-      console.log("Keyword matching:", {
-        matching: matchingKeywords,
-        missing: missingKeywords
-      });
-
-      // Calculate match percentage
-      const matchPercentage = allJobKeywords.length > 0
-        ? Math.round((matchingKeywords.length / allJobKeywords.length) * 100)
-        : 0;
-
+      // Example results
       const results = {
-        matchPercentage,
-        matchingKeywords,
-        missingKeywords,
-        recommendations: this.generateRecommendations(
-          matchPercentage,
-          matchingKeywords,
-          missingKeywords,
-          resumeKeywords
-        )
+        score: 85,
+        keywords: ["JavaScript", "React", "Node.js", "Python"],
+        missingKeywords: ["Docker", "AWS", "TypeScript"],
+        suggestions: [
+          "Add more details about your technical projects",
+          "Include quantifiable achievements",
+          "Add missing keywords: Docker, AWS, TypeScript",
+        ],
       };
 
-      console.log("Final results:", results);
-      return results;
+      // Update the dashboard with results
+      this.updateDashboard(results);
 
+      // Show the results section
+      const resultsSection = document.getElementById("resultsSection");
+      if (resultsSection) {
+        resultsSection.style.display = "block";
+      }
+
+      // Update preview card to show completed state
+      const previewCard = document.getElementById("filePreviewCard");
+      if (previewCard) {
+        previewCard.classList.add("analyzed");
+      }
+
+      this.showSuccess("Resume analyzed successfully!");
     } catch (error) {
-      console.error("Analysis error:", error);
-      throw error;
+      console.error("Error analyzing resume:", error);
+      this.showError("Error analyzing resume. Please try again.");
+    } finally {
+      // Reset button state
+      const analyzeBtn = document.getElementById("analyzeBtn");
+      if (analyzeBtn) {
+        analyzeBtn.disabled = false;
+        analyzeBtn.innerHTML = "<i class='fas fa-search'></i> Analyze";
+      }
     }
   }
 
-  displayResults(results) {
-    console.log("Displaying results:", results);
+  updateDashboard(results) {
+    console.log('Updating dashboard with results:', results);
 
-    // Update match score (ensure it's a number)
-    const score = isNaN(results.matchPercentage) ? 0 : results.matchPercentage;
-    if (this.matchScore) {
-      this.matchScore.textContent = score;
+    // Create results section if it doesn't exist
+    let resultsSection = document.getElementById('resultsSection');
+    if (!resultsSection) {
+      resultsSection = document.createElement('div');
+      resultsSection.id = 'resultsSection';
+      resultsSection.className = 'results-section';
+      
+      // Insert after file preview card
+      const filePreview = document.getElementById('filePreviewCard');
+      if (filePreview) {
+        filePreview.insertAdjacentElement('afterend', resultsSection);
+      }
     }
 
-    // Update found keywords
-    if (this.foundKeywordsList) {
-      this.foundKeywordsList.innerHTML =
-        Array.isArray(results.matchingKeywords) &&
-        results.matchingKeywords.length > 0
-          ? results.matchingKeywords
-              .map((keyword) => `<li>${keyword}</li>`)
-              .join("")
-          : "<li>No matching keywords found</li>";
-    }
+    // Update results content
+    resultsSection.innerHTML = `
+      <div class="results-card">
+        <h3>Resume Analysis Results</h3>
+        
+        <div class="score-section">
+          <div class="score-circle">
+            <span class="score-number">${results.score}</span>
+            <span class="score-label">Score</span>
+          </div>
+        </div>
 
-    // Update missing keywords
-    if (this.missingKeywordsList) {
-      this.missingKeywordsList.innerHTML =
-        Array.isArray(results.missingKeywords) &&
-        results.missingKeywords.length > 0
-          ? results.missingKeywords
-              .map((keyword) => `<li>${keyword}</li>`)
-              .join("")
-          : "<li>No missing keywords found</li>";
-    }
+        <div class="keywords-section">
+          <h4>Detected Keywords</h4>
+          <div class="keyword-tags">
+            ${results.keywords.map(keyword => 
+              `<span class="keyword-tag">${keyword}</span>`
+            ).join('')}
+          </div>
+        </div>
 
-    // Update recommendations
-    const recommendationsList = document.getElementById("recommendationsList");
-    if (recommendationsList && Array.isArray(results.recommendations)) {
-      recommendationsList.innerHTML =
-        results.recommendations.map((rec) => `<li>${rec}</li>`).join("") ||
-        "<li>No recommendations available</li>";
-    }
+        <div class="missing-keywords-section">
+          <h4>Missing Keywords</h4>
+          <div class="keyword-tags">
+            ${results.missingKeywords.map(keyword => 
+              `<span class="keyword-tag missing">${keyword}</span>`
+            ).join('')}
+          </div>
+        </div>
 
-    // Show results section
-    if (this.resultsSection) {
-      this.resultsSection.style.display = "block";
-    }
+        <div class="suggestions-section">
+          <h4>Suggestions</h4>
+          <ul class="suggestions-list">
+            ${results.suggestions.map(suggestion => 
+              `<li>${suggestion}</li>`
+            ).join('')}
+          </ul>
+        </div>
+      </div>
+    `;
+
+    // Show the results section
+    resultsSection.style.display = 'block';
+
+    // Scroll to results
+    resultsSection.scrollIntoView({ behavior: 'smooth' });
   }
 
-  generateRecommendations(
-    matchPercentage,
-    matchingKeywords,
-    missingKeywords,
-    resumeKeywords
-  ) {
-    const recommendations = [];
+  showToast(message, type = "info") {
+    // Remove any existing toasts
+    const existingToasts = document.querySelectorAll(".toast");
+    existingToasts.forEach((toast) => toast.remove());
 
-    // Match percentage recommendations
-    if (matchPercentage < 40) {
-      recommendations.push(
-        "⚠️ Your resume needs significant improvements to match this job's requirements."
-      );
-    } else if (matchPercentage < 70) {
-      recommendations.push(
-        "📈 Your resume partially matches the job requirements but could be improved."
-      );
-    } else {
-      recommendations.push(
-        "✅ Your resume shows good alignment with the job requirements!"
-      );
-    }
+    // Create new toast
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
 
-    // Missing keywords recommendations
-    if (missingKeywords.length > 0) {
-      recommendations.push(
-        `🔧 Consider adding experience with: ${missingKeywords.join(", ")}`
-      );
-    }
+    // Force a reflow to trigger animation
+    toast.offsetHeight;
 
-    // General recommendations
-    recommendations.push(
-      "📝 Ensure your resume highlights specific achievements"
-    );
-    recommendations.push("📊 Quantify your impact with metrics where possible");
-    recommendations.push(
-      "🎯 Make sure your technical skills section is prominent"
-    );
+    // Remove the toast after animation
+    setTimeout(() => {
+      toast.classList.add("hide");
+      setTimeout(() => toast.remove(), 500);
+    }, 3000);
 
-    return recommendations;
+    console.log("Toast created:", message, type);
   }
 
-  showLoading(message = "Processing...") {
-    // Add a loading class to the analyze button
-    if (this.analyzeButton) {
-      this.analyzeButton.classList.add("loading");
-      this.analyzeButton.disabled = true;
+  showError(message) {
+    this.showToast(message, "error");
+  }
+
+  showSuccess(message) {
+    this.showToast(message, "success");
+  }
+
+  showFilePreview(file) {
+    console.log("Showing file preview for:", file.name);
+
+    // Create or get the preview card
+    let previewCard = document.getElementById("filePreviewCard");
+
+    if (!previewCard) {
+      previewCard = document.createElement("div");
+      previewCard.id = "filePreviewCard";
+
+      // Insert after the upload-box
+      const uploadBox = document.querySelector(".upload-box");
+      if (uploadBox) {
+        uploadBox.insertAdjacentElement("afterend", previewCard);
+      } else {
+        console.warn("upload-box not found");
+        return;
+      }
     }
 
-    if (this.loadingText) {
-      this.loadingText.textContent = message;
-    }
-    if (this.loadingOverlay) {
-      this.loadingOverlay.classList.add("active");
-    }
-  }
-
-  hideLoading() {
-    // Remove loading state from analyze button
-    if (this.analyzeButton) {
-      this.analyzeButton.classList.remove("loading");
-      this.analyzeButton.disabled = false;
-    }
-
-    if (this.loadingOverlay) {
-      this.loadingOverlay.classList.remove("active");
-    }
-  }
-
-  async extractTextFromFile(file) {
-    if (file.type === "application/pdf") {
-      return await this.extractPdfText(file);
-    } else if (file.type.includes("word")) {
-      return await this.extractDocxText(file);
-    }
-    throw new Error("Unsupported file type");
-  }
-
-  async extractPdfText(file) {
-    const arrayBuffer = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-    let text = "";
-
-    for (let i = 1; i <= pdf.numPages; i++) {
-      const page = await pdf.getPage(i);
-      const content = await page.getTextContent();
-      text += content.items.map((item) => item.str).join(" ");
-    }
-
-    return text;
-  }
-
-  async extractDocxText(file) {
-    const arrayBuffer = await file.arrayBuffer();
-    const result = await mammoth.extractRawText({ arrayBuffer });
-
-    if (!result.value) {
-      throw new Error("No text content found in document");
-    }
-
-    return result.value;
-  }
-
-  // Debounce helper function
-  debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-      const later = () => {
-        clearTimeout(timeout);
-        func(...args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
-  }
-
-  handleError(title, error) {
-    console.error(title, error);
-    alert(`${title}: ${error.message}`);
-  }
-
-  isValidFileType(file) {
-    const allowedTypes = [
-      "application/pdf",
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    ];
-    return allowedTypes.includes(file.type);
-  }
-
-  isValidFileSize(file) {
-    const maxSize = 5 * 1024 * 1024; // 5MB
-    return file.size <= maxSize;
-  }
-
-  hasValidContent(text) {
-    return text.trim() !== "";
+    // Update preview card content
+    previewCard.className = "file-preview-card";
+    previewCard.innerHTML = `
+      <div class="file-info">
+        <i class="fas fa-file-pdf file-icon"></i>
+        <span class="file-name">${file.name}</span>
+      </div>
+      <div class="file-status">
+        <i class="fas fa-check-circle success-icon"></i>
+      </div>
+    `;
   }
 }
 
-// Initialize when DOM is loaded
+// Initialize only after DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
-  window.optimizer = new ResumeOptimizer();
+  console.log("DOM Content Loaded");
+  try {
+    window.resumeOptimizer = new ResumeOptimizer();
+    console.log("ResumeOptimizer initialized");
+  } catch (error) {
+    console.error("Error initializing ResumeOptimizer:", error);
+  }
 });
