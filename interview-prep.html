@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JobGenie — Interview Preparation</title>
+    <title>AI Interview Prep | JobGenie</title>
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/interview-prep.css" />
     <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
@@ -39,112 +39,73 @@
     </header>
 
     <main class="interview-container">
-      <div class="prep-header">
-        <h1>Interview Preparation</h1>
-        <div class="session-stats">
-          <span class="stat">Questions: <span id="questionCount">0</span></span>
-          <span class="stat">Progress: <span id="progressScore">0%</span></span>
-          <span class="stat">Time: <span id="sessionTime">00:00</span></span>
-        </div>
-      </div>
+      <section class="interview-hero">
+        <h1>AI-Powered Interview Preparation</h1>
+        <p class="subtitle">Get personalized interview questions and real-time feedback based on your job description</p>
+      </section>
 
-      <div class="prep-content">
-        <!-- Job Description Section -->
-        <div class="job-description-section">
-          <h2>Job Description</h2>
-          <div class="description-input">
-            <textarea
-              id="jobDescription"
-              placeholder="Paste the job description here to get tailored interview questions..."
-              rows="8"
-            ></textarea>
-            <button id="startPrep" class="primary-button">
-              Start Interview Prep
-            </button>
+      <section class="interview-prep-section">
+        <div class="job-input-container">
+          <h2>Start Your Interview Prep</h2>
+          <div class="input-group">
+            <label for="jobTitle">Job Title</label>
+            <input type="text" id="jobTitle" placeholder="e.g., Frontend Developer">
           </div>
+          <div class="input-group">
+            <label for="jobDescription">Job Description</label>
+            <textarea id="jobDescription" placeholder="Paste the job description here..."></textarea>
+          </div>
+          <button id="generateQuestions" class="primary-button">Generate Interview Questions</button>
         </div>
 
-        <!-- Interview Chat Section -->
-        <div class="interview-chat-section">
-          <div class="chat-container">
-            <div id="chatMessages" class="chat-messages">
+        <div class="mock-interview-container" style="display: none;">
+          <div class="question-counter">
+            <span>Question <span id="currentQuestion">1</span> of <span id="totalQuestions">5</span></span>
+            <span class="free-limit">Free Plan: 5 questions per job</span>
+          </div>
+
+          <div class="interview-chat">
+            <div class="chat-messages" id="chatMessages">
               <!-- Messages will be inserted here -->
-              <div class="message system">
-                Welcome to JobGenie Interview Prep! Paste a job description to
-                begin your personalized interview session.
+            </div>
+
+            <div class="user-input">
+              <textarea id="userAnswer" placeholder="Type your answer here..."></textarea>
+              <button id="submitAnswer" class="primary-button">Submit Answer</button>
+            </div>
+          </div>
+
+          <div class="feedback-container" style="display: none;">
+            <h3>AI Feedback</h3>
+            <div class="feedback-content">
+              <div class="feedback-section">
+                <h4>Strengths</h4>
+                <ul id="strengthsList"></ul>
+              </div>
+              <div class="feedback-section">
+                <h4>Areas for Improvement</h4>
+                <ul id="improvementsList"></ul>
+              </div>
+              <div class="feedback-section">
+                <h4>Sample Response</h4>
+                <p id="sampleResponse"></p>
               </div>
             </div>
-            <div class="chat-input">
-              <textarea
-                id="userResponse"
-                placeholder="Type your response here..."
-                rows="3"
-              ></textarea>
-              <button id="sendResponse" class="primary-button">
-                Send Response
-              </button>
-            </div>
-          </div>
-
-          <!-- Interview Progress Panel -->
-          <div class="progress-panel">
-            <h3>Session Progress</h3>
-            <div class="progress-bar">
-              <div id="progressBar" class="progress" style="width: 0%"></div>
-            </div>
-            <div class="topic-list">
-              <h4>Topics Covered</h4>
-              <ul id="topicsList">
-                <!-- Topics will be inserted here -->
-              </ul>
-            </div>
-            <div class="improvement-tips">
-              <h4>Quick Tips</h4>
-              <ul>
-                <li>Use the STAR method for behavioral questions</li>
-                <li>Provide specific examples</li>
-                <li>Keep responses concise and focused</li>
-              </ul>
-            </div>
+            <button id="nextQuestion" class="secondary-button">Next Question</button>
           </div>
         </div>
-      </div>
 
-      <!-- Session Summary Modal -->
-      <div id="summaryModal" class="modal">
-        <div class="modal-content">
-          <span class="close">&times;</span>
-          <h2>Interview Session Summary</h2>
-          <div class="summary-content">
-            <div class="summary-section">
-              <h3>Strengths</h3>
-              <ul id="strengthsList">
-                <!-- Strengths will be inserted here -->
-              </ul>
-            </div>
-            <div class="summary-section">
-              <h3>Areas for Improvement</h3>
-              <ul id="improvementsList">
-                <!-- Improvements will be inserted here -->
-              </ul>
-            </div>
-            <div class="summary-section">
-              <h3>Next Steps</h3>
-              <ul id="nextStepsList">
-                <!-- Next steps will be inserted here -->
-              </ul>
-            </div>
-          </div>
-          <div class="summary-actions">
-            <button id="downloadSummary" class="secondary-button">
-              Download Summary
-            </button>
-            <button id="newSession" class="primary-button">
-              Start New Session
-            </button>
-          </div>
+        <div class="upgrade-prompt">
+          <h3>Want More Practice?</h3>
+          <p>Upgrade to Premium for:</p>
+          <ul>
+            <li>✨ Unlimited interview questions</li>
+            <li>🎤 Voice interview practice</li>
+            <li>📊 Detailed performance analytics</li>
+          </ul>
+          <a href="pricing.html" class="cta-button">Upgrade Now</a>
         </div>
-      </div>
+      </section>
     </main>
 
     <script src="js/interview-prep.js"></script>

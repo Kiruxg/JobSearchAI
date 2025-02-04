@@ -259,4 +259,189 @@
         flex-direction: column;
         gap: 8px;
     }
+}
+
+/* Interview Prep Styles */
+.interview-container {
+    max-width: 1200px;
+    margin: 80px auto;
+    padding: 0 20px;
+}
+
+.interview-hero {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.interview-hero h1 {
+    font-size: 36px;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+}
+
+.interview-hero .subtitle {
+    font-size: 18px;
+    color: #4b5563;
+}
+
+/* Job Input Section */
+.job-input-container {
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 32px;
+}
+
+.input-group {
+    margin-bottom: 24px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.input-group input,
+.input-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.input-group textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+/* Mock Interview Section */
+.mock-interview-container {
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 32px;
+}
+
+.question-counter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    font-weight: 500;
+}
+
+.free-limit {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.interview-chat {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 24px;
+}
+
+.chat-messages {
+    padding: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.message {
+    margin-bottom: 16px;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.interviewer-message {
+    background: #f3f4f6;
+}
+
+.user-message {
+    background: #e8f5fe;
+    margin-left: 20px;
+}
+
+.user-input {
+    padding: 16px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.user-input textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Feedback Section */
+.feedback-container {
+    background: #f8fafc;
+    padding: 24px;
+    border-radius: 8px;
+    margin-top: 24px;
+}
+
+.feedback-section {
+    margin-bottom: 20px;
+}
+
+.feedback-section h4 {
+    color: #1a1a1a;
+    margin-bottom: 12px;
+}
+
+.feedback-section ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.feedback-section li {
+    margin-bottom: 8px;
+    color: #4b5563;
+}
+
+/* Upgrade Prompt */
+.upgrade-prompt {
+    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+    color: white;
+    padding: 32px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.upgrade-prompt h3 {
+    font-size: 24px;
+    margin-bottom: 16px;
+}
+
+.upgrade-prompt ul {
+    list-style: none;
+    margin: 24px 0;
+}
+
+.upgrade-prompt li {
+    margin-bottom: 12px;
+}
+
+.upgrade-prompt .cta-button {
+    display: inline-block;
+    background: white;
+    color: #2563eb;
+    padding: 12px 32px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.upgrade-prompt .cta-button:hover {
+    transform: translateY(-2px);
 } 

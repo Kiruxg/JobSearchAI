@@ -44,6 +44,7 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 20px;
+    height: fit-content;
 }
 
 .applications-list {
@@ -131,52 +132,68 @@ tr:hover {
 .modal {
     display: none;
     position: fixed;
-    top: 0;
+    z-index: 1000;
     left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
+    overflow: auto;
 }
 
 .modal-content {
-    position: relative;
-    background-color: white;
-    margin: 50px auto;
-    padding: 30px;
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
     border-radius: 8px;
-    max-width: 500px;
     width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .close {
     position: absolute;
     right: 20px;
-    top: 20px;
-    font-size: 24px;
+    top: 10px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
     cursor: pointer;
-    color: #666;
 }
 
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Form Styles */
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 8px;
-    color: #333;
+    margin-bottom: 0.5rem;
     font-weight: 500;
 }
 
 .form-group input,
 .form-group select,
-.form-group textarea {
+.form-actions .secondary-button {
     width: 100%;
-    padding: 8px 12px;
+    padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 14px;
+}
+
+.form-group textarea {
+    width: 100%;
+    height: 100px;
+    resize: vertical;
 }
 
 .form-actions {
@@ -205,18 +222,17 @@ tr:hover {
     background-color: #1d4ed8;
 }
 
-.form-actions .secondary-button {
-    background-color: #f3f4f6;
-    color: #4b5563;
-    border: 1px solid #e5e7eb;
-}
-
 .form-actions .secondary-button:hover {
     background-color: #e5e7eb;
 }
 
 .form-actions button:active {
     transform: translateY(1px);
+}
+
+#submitJob {
+    width: 100%;
+    margin-top: 20px;
 }
 
 /* Upcoming Reminders */
@@ -240,27 +256,50 @@ tr:hover {
 }
 
 /* Action Buttons */
-.action-buttons {
-    display: flex;
-    gap: 8px;
-}
-
-.action-button {
-    padding: 4px 8px;
+.edit-btn,
+.delete-btn {
+    padding: 8px 16px;
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    border-radius: 6px;
     font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-right: 8px;
 }
 
-.edit-button {
-    background-color: #e3f2fd;
-    color: #1976d2;
+.edit-btn {
+    background-color: #3B82F6;
+    color: white;
 }
 
-.delete-button {
-    background-color: #ffebee;
-    color: #c62828;
+.edit-btn:hover {
+    background-color: #2563EB;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.delete-btn {
+    background-color: #EF4444;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #DC2626;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.edit-btn:active,
+.delete-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Action buttons container */
+.action-buttons {
+    white-space: nowrap;
+    width: 1%;
 }
 
 /* Responsive Design */

@@ -392,7 +392,7 @@ class CoverLetterGenerator {
 
       // Sort by frequency and get top 2
       const topSkills = Array.from(keywordCounts.entries())
-        .sort((a, b) => b[1] — a[1])
+        .sort((a, b) => b[1] - a[1])
         .slice(0, 2)
         .map(([skill]) => skill);
 
@@ -797,31 +797,28 @@ ${data.firstName} ${data.lastName}`.trim();
     return '';
   }
 
-  showToast(message, type = 'success') {
+  showToast(message, type = 'info') {
+    // Remove any existing toasts
+    const existingToasts = document.querySelectorAll('.toast');
+    existingToasts.forEach(toast => toast.remove());
+
+    // Create new toast
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
-    toast.innerHTML = `
-        <div class="toast-content">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                ${type === 'success' 
-                    ? '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>'
-                    : '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>'
-                }
-            </svg>
-            <span>${message}</span>
-        </div>
-    `;
-    
+    toast.textContent = message;
     document.body.appendChild(toast);
-    
-    // Trigger animation
-    setTimeout(() => toast.classList.add('show'), 100);
-    
-    // Remove after delay
+
+    // Force a reflow to trigger animation
+    toast.offsetHeight;
+
+    // Remove the toast after animation
     setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
+        toast.classList.add('hide');
+        setTimeout(() => toast.remove(), 500);
     }, 3000);
+
+    // Log for debugging
+    console.log('Toast created:', message, type);
   }
 }
 

@@ -40,8 +40,8 @@
 
     <main class="dashboard-container">
       <div class="dashboard-header">
-        <h1>Job Application Tracker</h1>
-        <button id="addJobBtn" class="primary-button">+ Add Application</button>
+        <h1>Job Applications Tracker</h1>
+        <button id="addJobBtn" class="primary-button">Add Application</button>
       </div>
 
       <div class="dashboard-stats">
@@ -83,31 +83,23 @@
             </div>
           </div>
           <div class="applications-table">
-            <table>
+            <table class="job-table">
               <thead>
                 <tr>
                   <th>Company</th>
-                  <th>Job Title</th>
+                  <th>Position</th>
                   <th>Status</th>
-                  <th>Applied Date</th>
-                  <th>Next Follow-up</th>
-                  <th>Actions</th>
+                  <th>Date Applied</th>
+                  <th>Notes</th>
+                  <th class="actions-header">Actions</th>
                 </tr>
               </thead>
-              <tbody id="applicationsTableBody">
+              <tbody id="jobTableBody">
                 <!-- Job applications will be inserted here -->
               </tbody>
             </table>
           </div>
         </div>
-
-        <div class="upcoming-reminders">
-          <h2>Upcoming Reminders</h2>
-          <div id="remindersList">
-            <!-- Reminders will be inserted here -->
-          </div>
-        </div>
-      </div>
     </main>
 
     <!-- Add Job Modal -->
@@ -138,10 +130,6 @@
             <input type="date" id="appliedDate" required />
           </div>
           <div class="form-group">
-            <label for="followUpDate">Next Follow-up</label>
-            <input type="date" id="followUpDate" />
-          </div>
-          <div class="form-group">
             <label for="notes">Notes</label>
             <textarea id="notes" rows="3"></textarea>
           </div>
@@ -149,13 +137,7 @@
             <button type="submit" class="primary-button">
               Save Application
             </button>
-            <button
-              type="button"
-              class="secondary-button"
-              onclick="closeModal()"
-            >
-              Cancel
-            </button>
+    
           </div>
         </form>
       </div>
