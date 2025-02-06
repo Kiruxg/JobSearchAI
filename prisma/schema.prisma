@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+    id            Int           @id @default(autoincrement())
+    email         String        @unique
+    password      String?       // Optional because of social login
+    name          String?
+    avatar        String?
+    googleId      String?       @unique
+    linkedinId    String?       @unique
+    subscription  Subscription?
+    applications  JobApplication[]
+    platforms     PlatformConnection[]
+    preferences   UserPreferences?
+    createdAt     DateTime      @default(now())
+    updatedAt     DateTime      @updatedAt
+}
+
+model Subscription {
+    id                   Int       @id @default(autoincrement())
+    userId               Int       @unique
+    user                 User      @relation(fields: [userId], references: [id])
+    stripeCustomerId     String    @unique
+    stripeSubscriptionId String    @unique
+    status              String    // active, past_due, cancelled
+    plan                String    @default("free")
+    currentPeriodEnd    DateTime
+    cancelledAt         DateTime?
+    createdAt           DateTime  @default(now())
+    updatedAt           DateTime  @updatedAt
+}
+
+model JobApplication {
+    id           Int      @id @default(autoincrement())
+    userId       Int
+    user         User     @relation(fields: [userId], references: [id])
+    company      String
+    position     String
+    status       String   // applied, interview, offer, rejected
+    dateApplied  DateTime
+    platform     String?  // linkedin, indeed, manual
+    jobUrl       String?
+    salary       String?
+    location     String?
+    notes        String?
+    nextSteps    String?
+    contactName  String?
+    contactEmail String?
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+
+    @@index([userId, status])
+    @@index([dateApplied])
+}
+
+model PlatformConnection {
+    id            Int      @id @default(autoincrement())
+    userId        Int
+    user          User     @relation(fields: [userId], references: [id])
+    platform      String   // linkedin, indeed
+    accessToken   String
+    refreshToken  String?
+    expiresAt     DateTime
+    profileData   Json?
+    lastSynced    DateTime?
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+
+    @@unique([userId, platform])
+    @@index([platform, userId])
+}
+
+// For storing application activity/history
+model ApplicationActivity {
+    id                Int      @id @default(autoincrement())
+    applicationId     Int
+    type             String   // status_change, note_added, interview_scheduled
+    previousValue    String?
+    newValue        String?
+    note            String?
+    createdAt       DateTime @default(now())
+
+    @@index([applicationId])
+}
+
+// For storing user preferences
+model UserPreferences {
+    id                 Int      @id @default(autoincrement())
+    userId            Int      @unique
+    user              User     @relation(fields: [userId], references: [id])
+    emailNotifications Boolean  @default(true)
+    pushNotifications Boolean  @default(true)
+    theme             String   @default("light")
+    defaultView       String   @default("list")
+    createdAt         DateTime @default(now())
+    updatedAt         DateTime @updatedAt
+} 

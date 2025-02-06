@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Processing Login...</title>
+</head>
+<body>
+    <script>
+        // Get user data from URL params
+        const params = new URLSearchParams(window.location.search);
+        const userData = params.get('user');
+        const error = params.get('error');
+
+        if (userData) {
+            // Send success message to parent window
+            window.opener.postMessage({
+                type: 'oauth-success',
+                user: JSON.parse(decodeURIComponent(userData))
+            }, window.location.origin);
+        } else if (error) {
+            // Send error message to parent window
+            window.opener.postMessage({
+                type: 'oauth-error',
+                error: decodeURIComponent(error)
+            }, window.location.origin);
+        }
+
+        // Close popup
+        window.close();
+    </script>
+</body>
+</html> 

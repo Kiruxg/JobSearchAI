@@ -444,6 +444,15 @@ class ResumeOptimizer {
       </div>
     `;
   }
+
+  async optimizeResume() {
+    try {
+      // ... optimization logic ...
+      window.toast.show('Resume optimized successfully!', 'success');
+    } catch (error) {
+      window.toast.show('Failed to optimize resume', 'error');
+    }
+  }
 }
 
 // Initialize only after DOM is ready

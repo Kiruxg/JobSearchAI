@@ -1,3 +1,5 @@
+import { authService } from './auth.js';
+
 class DatePicker {
   constructor(inputElement) {
     this.input = inputElement;
@@ -31,6 +33,7 @@ class JobTracker {
   constructor() {
     this.jobs = [];
     this.currentEditIndex = null;
+    this.platformConnections = { linkedin: false, indeed: false };
     this.init();
   }
 
@@ -298,6 +301,80 @@ class JobTracker {
       const responses = this.jobs.filter(job => job.status !== 'applied').length;
       const rate = this.jobs.length ? Math.round((responses / this.jobs.length) * 100) : 0;
       responseRate.textContent = `${rate}%`;
+    }
+  }
+
+  async connectLinkedIn() {
+    try {
+      const linkedinStatus = document.getElementById('linkedinStatus');
+      linkedinStatus.textContent = 'Connecting...';
+      
+      // Initiate LinkedIn auth
+      const token = await authService.initiateAuth('linkedin');
+      
+      // Store token securely
+      await this.storeToken('linkedin', token);
+      
+      this.platformConnections.linkedin = true;
+      linkedinStatus.textContent = 'Connected';
+      linkedinStatus.classList.add('connected');
+      
+      // Fetch applications with token
+      await this.fetchLinkedInApplications(token);
+      
+      this.showToast('Successfully connected to LinkedIn', 'success');
+    } catch (error) {
+      console.error('LinkedIn connection error:', error);
+      document.getElementById('linkedinStatus').textContent = 'Connection failed';
+      document.getElementById('linkedinStatus').classList.add('error');
+      this.showToast('Failed to connect to LinkedIn', 'error');
+    }
+  }
+
+  async connectIndeed() {
+    try {
+      const indeedStatus = document.getElementById('indeedStatus');
+      indeedStatus.textContent = 'Connecting...';
+      
+      // Initiate Indeed auth
+      const token = await authService.initiateAuth('indeed');
+      
+      // Store token securely
+      await this.storeToken('indeed', token);
+      
+      this.platformConnections.indeed = true;
+      indeedStatus.textContent = 'Connected';
+      indeedStatus.classList.add('connected');
+      
+      // Fetch applications with token
+      await this.fetchIndeedApplications(token);
+      
+      this.showToast('Successfully connected to Indeed', 'success');
+    } catch (error) {
+      console.error('Indeed connection error:', error);
+      document.getElementById('indeedStatus').textContent = 'Connection failed';
+      document.getElementById('indeedStatus').classList.add('error');
+      this.showToast('Failed to connect to Indeed', 'error');
+    }
+  }
+
+  async storeToken(platform, token) {
+    // Store token in secure HTTP-only cookie via backend
+    await fetch(`/api/auth/${platform}/store-token`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ token })
+    });
+  }
+
+  async syncApplications() {
+    try {
+      // ... sync logic ...
+      window.toast.show('Applications synced successfully!', 'success');
+    } catch (error) {
+      window.toast.show('Failed to sync applications', 'error');
     }
   }
 }

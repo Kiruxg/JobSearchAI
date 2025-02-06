@@ -1,3 +1,5 @@
+import toast from './toast.js';
+
 class CoverLetterGenerator {
   constructor() {
     // Initialize logger first
@@ -193,7 +195,7 @@ class CoverLetterGenerator {
       if (content) {
         this.updatePreview(content);
         this.log.success("Cover letter generated successfully");
-        this.showSuccess("Cover letter generated!");
+        toast.show('Cover letter generated successfully!', 'success');
       }
     } catch (error) {
       this.log.error(`Generation failed: ${error.message}`);

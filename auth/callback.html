@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Authentication Callback</title>
+    <script>
+        // Parse URL parameters
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+        const state = params.get('state');
+        const error = params.get('error');
+        const platform = window.location.pathname.includes('linkedin') ? 'linkedin' : 'indeed';
+
+        // Send message to parent window
+        window.opener.postMessage({
+            platform,
+            code,
+            state,
+            error
+        }, window.location.origin);
+
+        // Close popup
+        window.close();
+    </script>
+</head>
+<body>
+    <p>Completing authentication...</p>
+</body>
+</html> 

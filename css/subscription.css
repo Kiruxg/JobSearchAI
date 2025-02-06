@@ -1,0 +1,100 @@
+/* Subscription Modal */
+.subscription-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 800px;
+    width: 90%;
+}
+
+.plans-comparison {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.plan {
+    flex: 1;
+    padding: 2rem;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.plan.premium {
+    border: 2px solid #FFD700;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.price {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 1rem 0;
+}
+
+.price span {
+    font-size: 1rem;
+    color: #64748b;
+}
+
+.plan ul {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.plan li {
+    margin: 0.5rem 0;
+    color: #475569;
+}
+
+.upgrade-btn {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: black;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.upgrade-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Premium Feature Indicators */
+.premium-only::after {
+    content: '⭐ Premium';
+    font-size: 0.75rem;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: black;
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-left: 8px;
+}
+
+/* Upgrade Prompt */
+.upgrade-prompt {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+} 

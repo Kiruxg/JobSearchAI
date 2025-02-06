@@ -1,3 +1,5 @@
+import toast from './toast.js';
+
 // Sample questions database
 const questionTypes = {
     behavioral: [
@@ -216,4 +218,24 @@ function generateSampleResponse(question) {
         return "A strong response would outline your approach: 'I follow a systematic process where I first [initial step], then [next step]. For example, in my previous role, I [specific example]. This approach has consistently led to [positive outcome].'";
     }
     return "A strong response would include specific examples from your experience, clear actions taken, and measurable results achieved. Remember to stay focused on the question and provide concrete evidence of your skills and achievements.";
+}
+
+class InterviewPrep {
+    async saveNotes() {
+        try {
+            // ... save notes logic ...
+            toast.show('Notes saved successfully!', 'success');
+        } catch (error) {
+            toast.show('Failed to save notes', 'error');
+        }
+    }
+
+    async generateQuestions() {
+        try {
+            // ... question generation logic ...
+            toast.show('Interview questions generated!', 'success');
+        } catch (error) {
+            toast.show('Failed to generate questions', 'error');
+        }
+    }
 } 
