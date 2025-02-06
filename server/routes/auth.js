@@ -121,4 +121,29 @@ router.get('/auth/status', authMiddleware, (req, res) => {
     res.json({ user: req.user });
 });
 
+// Auth status endpoint
+router.get('/api/auth/status', (req, res) => {
+    // Check if there's a valid token in cookies
+    const token = req.cookies.token;
+    
+    if (!token) {
+        return res.json({ isAuthenticated: false });
+    }
+
+    try {
+        // Verify the token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        res.json({ 
+            isAuthenticated: true,
+            user: {
+                id: decoded.userId,
+                email: decoded.email
+            }
+        });
+    } catch (error) {
+        // Token is invalid or expired
+        res.json({ isAuthenticated: false });
+    }
+});
+
 module.exports = router; 

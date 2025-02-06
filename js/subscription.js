@@ -29,13 +29,39 @@ class SubscriptionManager {
             }
         };
 
-        this.stripe = Stripe('your_publishable_key');
+        const stripe = Stripe('pk_test_51HQ5UXAOBzJpPKFIV5gh2vq1C6VJeVnXsCisgeiIp9WTZHarHSxiw5c78cvPGnHOKnIUTDQasR584uty4oEiNDhq00KkCHtBgH');
         this.currentPlan = 'free';
+        this.isAuthenticated = false;
+        this.checkAuthentication();
         this.initializeSubscription();
         this.setupEventListeners();
     }
 
+    async checkAuthentication() {
+        try {
+            const response = await fetch('/api/auth/status');
+            const { isAuthenticated } = await response.json();
+            this.isAuthenticated = isAuthenticated;
+            
+            if (!this.isAuthenticated) {
+                this.redirectToLogin();
+                return false;
+            }
+            return true;
+        } catch (error) {
+            console.error('Failed to check authentication status:', error);
+            return false;
+        }
+    }
+
+    redirectToLogin() {
+        sessionStorage.setItem('redirectAfterLogin', window.location.pathname);
+        window.location.href = '/login';
+    }
+
     async initializeSubscription() {
+        if (!await this.checkAuthentication()) return;
+        
         try {
             const response = await fetch('/api/subscription/status');
             const status = await response.json();
@@ -125,6 +151,8 @@ class SubscriptionManager {
     }
 
     async selectPlan(plan) {
+        if (!await this.checkAuthentication()) return;
+        
         if (plan === this.currentPlan) return;
 
         if (plan === 'premium') {
@@ -135,6 +163,8 @@ class SubscriptionManager {
     }
 
     async handleUpgrade() {
+        if (!await this.checkAuthentication()) return;
+        
         try {
             const response = await fetch('/api/subscription/create-checkout', {
                 method: 'POST',
@@ -161,6 +191,8 @@ class SubscriptionManager {
     }
 
     async handleDowngrade() {
+        if (!await this.checkAuthentication()) return;
+        
         try {
             const response = await fetch('/api/subscription/cancel', {
                 method: 'POST'
